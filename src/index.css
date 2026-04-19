@@ -1,0 +1,178 @@
+@import "@/styles/theme.css";
+@import "@/styles/dark-theme.css";
+
+/* =========================
+   Font installation
+   ========================= */
+@font-face {
+  font-family: 'SyrianFont';
+  src: url('@/assets/fonts/Cairo-VariableFont_slnt,wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* =========================
+   Global Reset
+   ========================= */
+html{
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root{
+  --font-main: 'SyrianFont', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main), sans-serif;
+  background-color: var(--color-primary);
+}
+
+/* =========================
+   Typography
+   ========================= */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+  color: var(--color-text);
+  font-weight: normal;
+
+  justify-self: center;
+  text-align: center;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+  color: var(--color-sub-text);
+
+  text-align: center;
+}
+
+/* =========================
+   Buttons (UI system hook)
+   ========================= */
+button {
+  border: none;
+  place-content: center;
+  padding: 0.6rem 1rem;
+  font-family: var(--font-main), sans-serif;
+  cursor: pointer;
+  display: flex;
+  gap: 0.5rem;
+  
+  place-items: center;
+  border-radius: 2rem;
+  corner-shape: squircle;
+}
+
+button[data-variant="primary"] {
+  background-color: var(--color-action);
+  color: white;
+  transition: all 0.2s ease-in-out;
+}
+
+button[data-variant="primary"]:hover {
+  background-color: var(--color-action-hover);
+  transform: translateY(-0.15rem);
+  box-shadow: rgba(13, 19, 21, 0.5) 0 0 0.2rem 0.05rem;
+}
+
+button[data-variant="submit"] {
+  background-color: var(--color-text);
+  color: var(--color-outine);
+  transition: all 0.2s ease-in-out;
+}
+
+button[data-variant="submit"]:hover {
+  background-color: var(--color-outine);
+  color: var(--color-text);
+  transform: translateY(-0.15rem);
+  box-shadow: rgba(13, 19, 21, 0.5) 0 0 0.2rem 0.05rem;
+}
+
+button[data-variant="danger"] {
+  color: #ffffff;
+  background-color: var(--color-danger);
+  transition: all 0.2s ease-in-out;
+}
+
+button[data-variant="danger"]:hover {
+  background-color: var(--color-danger-hover);
+  transform: translateY(-0.15rem);
+  box-shadow: rgba(13, 19, 21, 0.5) 0 0 0.2rem 0.05rem;
+}
+
+/* =========================
+   Card button + hover effect
+   ========================= */
+
+button[data-variant="card"] {
+  color: var(--color-text);
+  background-color: transparent;
+
+  transition: all 0.2s ease-in-out;
+}
+
+button[data-variant="card"]:hover {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+/* =========================
+   Header button + hover effect
+   ========================= */
+
+button[data-variant="header"] {
+  position: relative;
+  color: var(--color-text);
+  background-color: transparent;
+  border: none;
+  white-space: nowrap;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+}
+
+button[data-variant="header"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--color-text);
+  border-radius: inherit;
+
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button[data-variant="header"]:hover::after {
+  transform: scaleX(1);
+  transform-origin: center;
+}
+
+/* =========================
+   Inputs
+   ========================= */
+input, select {
+  padding: 0.5rem;
+  /*border: 1px solid var(--border-default);*/
+  /*background-color: var(--bg-surface);*/
+  /*color: var(--text-primary);*/
+}
+
+/* =========================
+   Scrollbar settings
+   ========================= */
+html, body{
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
+}
