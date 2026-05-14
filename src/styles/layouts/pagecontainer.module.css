@@ -1,5 +1,6 @@
 .page_container_settings{
     width: 100%;
+    place-items: center;
     padding: 0 2rem;
 }
 

@@ -11,7 +11,7 @@ import {ElementsContainer} from "@/layouts/ElementsContainer.tsx";
 export default function Register() {
     return (
         <PageContainer>
-            <div style={{placeItems: 'center', height: '100vh', placeContent: 'center'}}>
+            <div style={{width:'100%', height:'100vh', placeContent:"center"}}>
                 <ElementsContainer>
                     <h1>
                         أنشأ حساب جديد
