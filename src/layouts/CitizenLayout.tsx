@@ -7,13 +7,14 @@ export default function CitizenLayout() {
     const location = useLocation();
 
     const isProfilePage = location.pathname.includes('/account');
+    const isServicesPage = location.pathname.includes('/services');
 
     return (
         <div className={styles.layouts_container}>
             <Header/>
             <div className={styles.title_container}>
                 <h1 className={styles.settings}>
-                    {isProfilePage ? "ملف المواطن" : "ساحة المواطن"}
+                    {isProfilePage ? "ملف المواطن" : isServicesPage ? "دليل الخدمات" : "ساحة المواطن"}
                 </h1>
                 {isProfilePage ?
                     <p>
@@ -32,27 +33,34 @@ export default function CitizenLayout() {
                         </a>
                     </p>
                     :
-                    <p>
-                        ساحة المواطن هي المكان الذي يمكّنك من متابعة معاملاتك وإنشاء معاملات جديدة
-                        <br/>
-                        أنشأ معاملة جديدة عبر قسم
-                        &nbsp;
-                        <a href={"#control-panel"} className={styles.navLink}>
-                            لوحة التحكم
-                        </a>
-                        &nbsp;
-                        أو راقب حركة معاملاتك عبر قسمي
-                        &nbsp;
-                        <a href={"#transactions-summary"} className={styles.navLink}>
-                            ملخص المعاملات
-                        </a>
-                        &nbsp;
-                        أو
-                        &nbsp;
-                        <a href={"#recent-transactions"} className={styles.navLink}>
-                            المعاملات الأخيرة
-                        </a>
-                    </p>
+                    isServicesPage ?
+                        <p>
+                            دليل الخدمات هو المكان الذي يحوي على جميع الدوائر الحكومية ومعاملاتهم المتوفرة
+                            <br/>
+                            اضغط على الدائرة الحكومية المطلوبة لعرض خدماتها
+                        </p>
+                        :
+                        <p>
+                            ساحة المواطن هي المكان الذي يمكّنك من متابعة معاملاتك وإنشاء معاملات جديدة
+                            <br/>
+                            أنشأ معاملة جديدة عبر قسم
+                            &nbsp;
+                            <a href={"#control-panel"} className={styles.navLink}>
+                                لوحة التحكم
+                            </a>
+                            &nbsp;
+                            أو راقب حركة معاملاتك عبر قسمي
+                            &nbsp;
+                            <a href={"#transactions-summary"} className={styles.navLink}>
+                                ملخص المعاملات
+                            </a>
+                            &nbsp;
+                            أو
+                            &nbsp;
+                            <a href={"#recent-transactions"} className={styles.navLink}>
+                                المعاملات الأخيرة
+                            </a>
+                        </p>
                 }
             </div>
             <Outlet/>

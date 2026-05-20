@@ -11,6 +11,7 @@ import NewTransactionPage from '../pages/citizen/NewTransaction/NewTransactionPa
 import TransactionDetailsPage from '../pages/citizen/TransactionDetails/TransactionDetailsPage.tsx'
 import MyDocumentsPage from '../pages/citizen/MyDocuments/MyDocumentsPage.tsx'
 import AccountPage from "../pages/citizen/Account/AccountPage.tsx";
+import ServicesPage from "../pages/citizen/Services/ServicesPage.tsx";
 
 import NotFound from '../pages/system/NotFound'
 
@@ -27,7 +28,8 @@ export const router = createBrowserRouter([
             { path: 'new', element: <NewTransactionPage /> },
             { path: 'transaction/:id', element: <TransactionDetailsPage /> },
             { path: 'documents', element: <MyDocumentsPage /> },
-            { path: 'account', element: <AccountPage />}
+            { path: 'account', element: <AccountPage />},
+            { path: 'services', element: <ServicesPage />},
         ]
     },
 

@@ -10,13 +10,16 @@ import {AiFillSun} from "react-icons/ai";
 import { toggleTheme } from '@/theme/theme.ts';
 import {useState} from "react";
 import {BsLayoutSidebarInset} from "react-icons/bs";
+import {useNavigate} from "react-router-dom";
 
 export function Header() {
+    const navigate = useNavigate();
+
     const headerItems = [
-        {id: 'home', label: 'الصفحة الرئيسية'},
-        {id: 'services', label: 'الخدمات الالكترونية'},
-        {id: 'about', label: 'عن الموقع'},
-        {id: 'contact', label: 'تواصل معنا'}
+        {id: 'dashboard', label: 'الرئيسية'},
+        {id: 'services', label: 'دليل الخدمات'},
+        {id: 'documents', label: 'معاملاتي'},
+        {id: 'payments', label: 'الدفع الإلكتروني'}
     ];
 
     const [theme, setTheme] = useState(
@@ -38,7 +41,7 @@ export function Header() {
                 </div>
                 <img src={SyrianLogo} alt="syrian_logo" className={styles.syrian_logo}/>
                 <nav className={`${styles.navigation_header_buttons} ${styles.header_buttons}`}>{headerItems.map((item) => (
-                    <Button variant={'header'} key={item.id}>
+                    <Button variant={'header'} key={item.id} onClick={() => {navigate(`/citizen/${item.id}`)}}>
                         {item.label}
                     </Button>
                 ))}
@@ -50,7 +53,7 @@ export function Header() {
                         :
                         <FaMoon size={20} className={styles.header_icons + styles.theme_icons} onClick={handleToggleTheme}/>}
                     <IoMdNotifications size={25} className={styles.header_icons}/>
-                    <MdAccountCircle size={25} className={styles.header_icons}/>
+                    <MdAccountCircle size={25} className={styles.header_icons} onClick={() => {navigate("/citizen/account")}}/>
                 </div>
             </div>
         </header>

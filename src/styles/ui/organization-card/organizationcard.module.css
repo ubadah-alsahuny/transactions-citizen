@@ -1,0 +1,24 @@
+.cardLayout {
+    width: 13rem;
+    height: 20rem;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-primary);
+    border-radius: 2rem;
+    corner-shape: squircle;
+    overflow: clip;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+.imageSettings {
+    height: 13rem;
+    width: 13rem;
+    background-color: white;
+}
+
+.cardLayout:hover {
+    transform: scale(1.02);
+}

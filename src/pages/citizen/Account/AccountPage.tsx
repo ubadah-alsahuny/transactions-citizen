@@ -33,38 +33,76 @@ export default function AccountPage() {
                     </div>
 
                     <div style={{width: '82%', display: "grid", gap: "1rem"}}>
-                        <Card
-                            width={"100%"}
-                            height={"6rem"}
-                            image={IDFront}
-                            type='horizontal'
-                            children={
-                                <div>
-                                    <h5>صورة الهوية الشخصية (من الأمام)</h5>
-                                    <p style={{fontSize: "0.7rem"}}>
-                                        سوف يتم استعمال هذه الصورة عند إرسالك طلب بخصوص أي معاملة تحتاجها
-                                    </p>
-                                </div>
-                            }
-                            buttonIcon={<BiEdit/>} buttonLabel={"تغيير"}>
-                        </Card>
-
-                        <Card
-                            width={"100%"}
-                            height={"6rem"}
-                            image={IDBack}
-                            type='horizontal'
-                            children={
-                                <div>
-                                    <h5>صورة الهوية الشخصية (من الخلف)</h5>
-                                    <p style={{fontSize: "0.7rem"}}>
-                                        سوف يتم استعمال هذه الصورة عند إرسالك طلب بخصوص أي معاملة تحتاجها
-                                    </p>
-                                </div>
-                            }
-                            buttonIcon={<BiEdit/>} buttonLabel={"تغيير"}>
-                        </Card>
-
+                        <ul style={{listStyle: "none"}}>
+                            <li>
+                                <Card
+                                    width={"100%"}
+                                    height={"6rem"}
+                                    image={IDFront}
+                                    type='horizontal'
+                                    children={
+                                        <div>
+                                            <h5>صورة الهوية الشخصية (من الأمام)</h5>
+                                            <p style={{fontSize: "0.7rem"}}>
+                                                سوف يتم استعمال هذه الصورة عند إرسالك طلب بخصوص أي معاملة تحتاجها
+                                            </p>
+                                        </div>
+                                    }
+                                    buttonIcon={<BiEdit/>} buttonLabel={"تغيير"}>
+                                </Card>
+                            </li>
+                            <li>
+                                <Card
+                                    width={"100%"}
+                                    height={"6rem"}
+                                    image={IDBack}
+                                    type='horizontal'
+                                    children={
+                                        <div>
+                                            <h5>صورة الهوية الشخصية (من الخلف)</h5>
+                                            <p style={{fontSize: "0.7rem"}}>
+                                                سوف يتم استعمال هذه الصورة عند إرسالك طلب بخصوص أي معاملة تحتاجها
+                                            </p>
+                                        </div>
+                                    }
+                                    buttonIcon={<BiEdit/>} buttonLabel={"تغيير"}>
+                                </Card>
+                            </li>
+                            <li>
+                                <Card
+                                    width={"100%"}
+                                    height={"6rem"}
+                                    image={IDBack}
+                                    type='horizontal'
+                                    children={
+                                        <div>
+                                            <h5>صورة الهوية الشخصية (من الخلف)</h5>
+                                            <p style={{fontSize: "0.7rem"}}>
+                                                سوف يتم استعمال هذه الصورة عند إرسالك طلب بخصوص أي معاملة تحتاجها
+                                            </p>
+                                        </div>
+                                    }
+                                    buttonIcon={<BiEdit/>} buttonLabel={"تغيير"}>
+                                </Card>
+                            </li>
+                            <li>
+                                <Card
+                                    width={"100%"}
+                                    height={"6rem"}
+                                    image={IDBack}
+                                    type='horizontal'
+                                    children={
+                                        <div>
+                                            <h5>صورة الهوية الشخصية (من الخلف)</h5>
+                                            <p style={{fontSize: "0.7rem"}}>
+                                                سوف يتم استعمال هذه الصورة عند إرسالك طلب بخصوص أي معاملة تحتاجها
+                                            </p>
+                                        </div>
+                                    }
+                                    buttonIcon={<BiEdit/>} buttonLabel={"تغيير"}>
+                                </Card>
+                            </li>
+                        </ul>
                     </div>
 
                 </div>

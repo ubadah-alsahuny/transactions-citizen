@@ -1,4 +1,6 @@
 .card_container {
+    margin-bottom: 0.5rem;
+
     display: flex;
     place-items: center;
 
