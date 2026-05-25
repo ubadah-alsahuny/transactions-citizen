@@ -20,15 +20,14 @@ export default function AccountPage() {
                             width={"100%"}
                             height={"100%"}
                             image={ProfilePicture}
-                            buttonIcon={<FaUserEdit/>}
-                            buttonLabel={<p>تغيير الصورة الشخصية</p>}
                             variant={'user'}
                             children={
-                                <div>
+                                <>
                                     <h4>عباده مختار الصهيوني</h4>
                                     <p style={{fontSize: "0.7rem"}}>صورة بخلفية بيضاء معتمدة لصاحب الحساب</p>
-                                </div>
+                                </>
                             }
+                            buttonIcon={<FaUserEdit/>} buttonLabel={<p>تغيير الصورة الشخصية</p>}
                         />
                     </div>
 
@@ -41,12 +40,12 @@ export default function AccountPage() {
                                     image={IDFront}
                                     type='horizontal'
                                     children={
-                                        <div>
+                                       <>
                                             <h5>صورة الهوية الشخصية (من الأمام)</h5>
                                             <p style={{fontSize: "0.7rem"}}>
                                                 سوف يتم استعمال هذه الصورة عند إرسالك طلب بخصوص أي معاملة تحتاجها
                                             </p>
-                                        </div>
+                                       </>
                                     }
                                     buttonIcon={<BiEdit/>} buttonLabel={"تغيير"}>
                                 </Card>
@@ -58,12 +57,12 @@ export default function AccountPage() {
                                     image={IDBack}
                                     type='horizontal'
                                     children={
-                                        <div>
+                                        <>
                                             <h5>صورة الهوية الشخصية (من الخلف)</h5>
                                             <p style={{fontSize: "0.7rem"}}>
                                                 سوف يتم استعمال هذه الصورة عند إرسالك طلب بخصوص أي معاملة تحتاجها
                                             </p>
-                                        </div>
+                                        </>
                                     }
                                     buttonIcon={<BiEdit/>} buttonLabel={"تغيير"}>
                                 </Card>
@@ -75,12 +74,12 @@ export default function AccountPage() {
                                     image={IDBack}
                                     type='horizontal'
                                     children={
-                                        <div>
+                                        <>
                                             <h5>صورة الهوية الشخصية (من الخلف)</h5>
                                             <p style={{fontSize: "0.7rem"}}>
                                                 سوف يتم استعمال هذه الصورة عند إرسالك طلب بخصوص أي معاملة تحتاجها
                                             </p>
-                                        </div>
+                                        </>
                                     }
                                     buttonIcon={<BiEdit/>} buttonLabel={"تغيير"}>
                                 </Card>
@@ -92,12 +91,12 @@ export default function AccountPage() {
                                     image={IDBack}
                                     type='horizontal'
                                     children={
-                                        <div>
+                                        <>
                                             <h5>صورة الهوية الشخصية (من الخلف)</h5>
                                             <p style={{fontSize: "0.7rem"}}>
                                                 سوف يتم استعمال هذه الصورة عند إرسالك طلب بخصوص أي معاملة تحتاجها
                                             </p>
-                                        </div>
+                                        </>
                                     }
                                     buttonIcon={<BiEdit/>} buttonLabel={"تغيير"}>
                                 </Card>

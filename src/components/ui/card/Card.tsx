@@ -42,16 +42,17 @@ export function Card ({
             </div>
             <div style={
                 {
-                    margin: "0.4rem",
+
                     display: 'flex',
-                    justifyContent: "space-between",
-                    width: type == 'vertical' ? '100%' : '75%',
-                    flexDirection: type == 'vertical' ? 'column' : 'row',
+                    flex: 'wrap',
+                    flexDirection: 'column',
                     placeContent: 'center'}}
             >
                 {children}
-                {buttonLabel != null || buttonIcon != null
-                    ?
+        </div>
+            {buttonLabel != null || buttonIcon != null
+                ?
+                <div style={{placeItems: 'end', marginLeft: '2rem'}}>
                     <Button
                         variant={'card'}
                         children={
@@ -61,9 +62,9 @@ export function Card ({
                             </div>
                         }
                         onClick={onButtonClick}/>
-                    :
-                    ""}
-            </div>
+                </div>
+                :
+                ""}
         </div>
     )
 }

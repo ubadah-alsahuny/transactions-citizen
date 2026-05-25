@@ -1,4 +1,4 @@
-import {Outlet, useLocation} from 'react-router-dom'
+import {Navigate, Outlet, useLocation} from 'react-router-dom'
 import {Header} from "@/components/navigation/Header.tsx";
 import {Footer} from "@/components/navigation/Footer.tsx";
 import styles from '@/styles/layouts/layouts.module.css'
@@ -8,6 +8,14 @@ export default function CitizenLayout() {
 
     const isProfilePage = location.pathname.includes('/account');
     const isServicesPage = location.pathname.includes('/services');
+
+    const token = localStorage.getItem('citizenToken');
+
+    console.log(token);
+
+    if (!token || token == 'undefined' || token == null) {
+      return <Navigate to="/login" replace />;
+    }
 
     return (
         <div className={styles.layouts_container}>

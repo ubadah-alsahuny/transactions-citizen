@@ -1,6 +1,11 @@
 import styles from '@/styles/ui/organization-card/organizationcard.module.css';
 
-export default function OrganizationCard() {
+type organizationProps = {
+    name: string;
+    description: string;
+}
+
+export default function OrganizationCard( { name = 'اسم الدائرة الحكومية', description = 'وصف عن أهم المعاملات الحكومية التي تقدمها الدائرة' }: organizationProps ) {
     return (
         <div className={styles.cardLayout}>
             <div className={styles.imageSettings}>
@@ -8,7 +13,7 @@ export default function OrganizationCard() {
             </div>
             <div style={{height: '5rem', padding: '0.25rem 2rem'}}>
                 <h4 style={{height: '2rem'}}>
-                    دائرة خدمة الزبائن
+                    {name}
                 </h4>
                 <p style={{
                     fontSize: '0.85rem',
@@ -17,7 +22,7 @@ export default function OrganizationCard() {
                     height: '3rem',
                     overflow: 'hidden'
                 }}>
-                    للقيام بالخدمات المتعلقة بالهاتف الأرضي أو الانترنت
+                    {description}
                 </p>
             </div>
         </div>

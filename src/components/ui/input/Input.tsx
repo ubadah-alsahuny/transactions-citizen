@@ -4,8 +4,9 @@ import React from "react";
 type InputProps = {
     label?: string
     icon?: React.ReactNode
-    onChange: (value: string) => void
+    onChange: (value: any) => void
     type?: string
+    value: string
     placeholder?: string
     required?: boolean
 }
@@ -15,6 +16,7 @@ export default function Input({
                                   icon,
                                   onChange,
                                   type = 'text',
+                                  value,
                                   required = false,
                               }: InputProps) {
     return (
@@ -24,6 +26,7 @@ export default function Input({
                 <input
                     type={type}
                     placeholder=""
+                    value={value}
                     required={required}
                     autoComplete='off'
                     autoCapitalize='off'

@@ -12,6 +12,7 @@ import TransactionDetailsPage from '../pages/citizen/TransactionDetails/Transact
 import MyDocumentsPage from '../pages/citizen/MyDocuments/MyDocumentsPage.tsx'
 import AccountPage from "../pages/citizen/Account/AccountPage.tsx";
 import ServicesPage from "../pages/citizen/Services/ServicesPage.tsx";
+import ServiceDetailsPage from '../pages/citizen/ServiceDetails/ServiceDetailsPage.tsx';
 
 import NotFound from '../pages/system/NotFound'
 
@@ -29,7 +30,12 @@ export const router = createBrowserRouter([
             { path: 'transaction/:id', element: <TransactionDetailsPage /> },
             { path: 'documents', element: <MyDocumentsPage /> },
             { path: 'account', element: <AccountPage />},
-            { path: 'services', element: <ServicesPage />},
+            {
+                path: 'services',
+                children: [
+                    { index: true, element: <ServicesPage />},
+                    { path: 'organization/:id', element: <ServiceDetailsPage />},
+                ]},
         ]
     },
 
