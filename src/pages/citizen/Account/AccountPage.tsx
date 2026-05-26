@@ -8,8 +8,46 @@ import IDBack from '@/assets/images/jpg/ID_Back.jpg'
 
 import {FaUserEdit} from "react-icons/fa";
 import {BiEdit} from "react-icons/bi";
+import {apiRequest} from "@/data/api.ts";
+import {useEffect, useRef, useState} from "react";
+import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 
 export default function AccountPage() {
+    const [isLoading, setIsLoading] = useState(false);
+    const [citizenName, setCitizenName] = useState('');
+    const [citizenDateOfBirth, setCitizenDateOfBirth] = useState('');
+
+    const [error, setError] = useState('');
+
+    const abortControllerRef = useRef<AbortController | null>(null);
+
+    useEffect(() => {
+        const handleShowProfile = async () => {
+            abortControllerRef.current?.abort();
+            abortControllerRef.current = new AbortController();
+            setIsLoading(true);
+
+            try {
+                const data = await apiRequest('/citizen/profile');
+
+                setCitizenName(data.fullName || data.data.fullName);
+                setCitizenDateOfBirth(data.data.dateOfBirth);
+            } catch (error: any) {
+                setError(error.message);
+                console.log(error.message);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        handleShowProfile();
+    }, []);
+
+    if (isLoading) {
+        return (
+            <LoadingCircle></LoadingCircle>
+        )
+    }
+
     return(
         <PageContainer>
             <Section title={"حسابك الشخصي"} id={"personal-account"}>
@@ -23,7 +61,7 @@ export default function AccountPage() {
                             variant={'user'}
                             children={
                                 <>
-                                    <h4>عباده مختار الصهيوني</h4>
+                                    <h4>{citizenName}</h4>
                                     <p style={{fontSize: "0.7rem"}}>صورة بخلفية بيضاء معتمدة لصاحب الحساب</p>
                                 </>
                             }

@@ -11,6 +11,7 @@ import {IoMdCard} from "react-icons/io";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {apiRequest} from "@/data/api.ts";
+import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 
 export default function Register() {
     const navigate = useNavigate();
@@ -131,7 +132,9 @@ export default function Register() {
                         <Button type={'submit'} variant={'submit'}>
                             <FaPaperPlane size={17}/>
                             {isLoading ?
-                                'يتم إنشاء الحساب' : 'أنشأ حساب'
+                                <LoadingCircle color={'black'}></LoadingCircle>
+                                :
+                                'أنشأ حساب'
                             }
                         </Button>
                     </form>

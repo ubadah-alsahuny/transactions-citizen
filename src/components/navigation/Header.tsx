@@ -11,6 +11,7 @@ import { toggleTheme } from '@/theme/theme.ts';
 import {useState} from "react";
 import {BsLayoutSidebarInset} from "react-icons/bs";
 import {useNavigate} from "react-router-dom";
+import {Logout} from "@/data/logout.ts";
 
 export function Header() {
     const navigate = useNavigate();
@@ -45,6 +46,9 @@ export function Header() {
                         {item.label}
                     </Button>
                 ))}
+                    <Button variant={'header'} onClick={() => {Logout(); navigate('/login')}}>
+                        تسجيل خروج
+                    </Button>
                 </nav>
                 <div className={styles.left_panel}>
                     {theme === 'dark-theme'

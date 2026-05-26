@@ -9,6 +9,8 @@ import {useState} from "react";
 import {apiRequest} from "@/data/api.ts";
 import {useNavigate} from "react-router-dom";
 import {MdAlternateEmail} from "react-icons/md";
+import {ErrorMessage} from "@/components/ui/error-message/ErrorMessage.tsx";
+import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -42,6 +44,7 @@ export default function Login() {
 
             navigate('/citizen/dashboard');
         } catch (error: any) {
+            setError(error.message)
             console.log(error.message || 'حدث خطأ أثناء عملية تسجيل الدخول، حاول مرة أخرى')
         } finally {
             setIsLoading(false);
@@ -50,6 +53,8 @@ export default function Login() {
 
     return <PageContainer>
         <div style={{width: '100%', height: '100vh', placeContent: "center"}}>
+            {error != '' ? <ErrorMessage children={error}></ErrorMessage> : null}
+
             <ElementsContainer>
                 <h1>
                     سجل دخول
@@ -75,9 +80,14 @@ export default function Login() {
                     </div>
 
                     <Button type={'submit'} variant={'submit'}>
-                        <FaPaperPlane size={17}/>
                         {isLoading ?
-                            'يتم تسجيل الدخول' : 'سجل دخول'
+                            <LoadingCircle color={'var(--color-primary)'}></LoadingCircle>
+                            :
+                            <div>
+                                <FaPaperPlane size={17}/>
+                                &nbsp;
+                                سجل دخول
+                            </div>
                         }
                     </Button>
                 </form>

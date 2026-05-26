@@ -1,0 +1,20 @@
+.errorMessageContainer {
+    width: fit-content;
+
+    place-self: center;
+    background-color: var(--color-danger);
+    padding: 0.5rem 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: var(--color-text);
+    border-radius: 2rem;
+    corner-shape: squircle;
+
+    animation: errorMessage 2s ease-in;
+}
+
+@keyframes errorMessage {
+    0% {opacity: 0;}
+    50% {opacity: 1}
+    100% {opacity: 0;}
+}
