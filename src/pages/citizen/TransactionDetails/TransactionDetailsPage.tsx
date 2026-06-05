@@ -56,29 +56,31 @@ export default function TransactionDetailsPage() {
         handleTransaction();
     }, []);
 
-    const handleInputChange = (fieldId: string, value: string) => {
+    const handleInputChange = (keyName: string, value: string) => {
         setFormData(prev => ({
             ...prev,
-            [fieldId]: value
+            [keyName]: value
         }));
     };
 
-    const handleSubmitTransaction = async () => {
+    const handleSubmitTransaction = async (e: React.FormEvent) => {
+        e.preventDefault();
         setIsSubmitLoading(true);
 
         try{
             const payload = {
                 transactionId: transactionID,
-                initialData: Object.entries(formData).map(([id, value]) => ({
-                    fieldId: id,
-                    value: value
-                }))
+                intialData: formData,
             };
 
-            const data = apiRequest(`citizen/transactions/${transactionID}/request`, {
+            console.log(payload);
+
+            const data = await apiRequest(`/citizen/transactions/${transactionID}/request`, {
                 method: 'POST',
-                body: JSON.stringify(payload),
+                bodyData: payload,
             });
+
+            console.log(data);
         } catch (e: any) {
             setError(e.message);
         } finally {
@@ -144,13 +146,21 @@ export default function TransactionDetailsPage() {
                         <ul>
                             {transactionDetails?.requiredIntialData.map((data) => (
                                 <div key={data.id} style={{display: 'flex', placeItems: 'center', gap: '2rem', width: '100%'}}>
-                                    <Input onChange={(value: string) => handleInputChange(data.id, value)}
+                                    <Input onChange={(value: string) => handleInputChange(data.keyName, value)}
                                            label={data.keyName} icon={<IoMdCard size={22}/>}
-                                           required={data.isRequired} value={formData[data.id]}></Input>
+                                           required={data.isRequired} value={formData[data.keyName]}></Input>
                                 </div>
                             ))}
                         </ul>
-                        <Button type={'submit'} variant={'submit'}>التقديم على المعاملة <MdArrowBackIos/></Button>
+                        <Button type={'submit'} variant={'submit'}>
+                            {isSubmitLoading ?
+                                ''
+                                :
+                                <div>
+                                    التقديم على المعاملة <MdArrowBackIos/>
+                                </div>
+                            }
+                        </Button>
                     </form>
                 </div>
             </Section>
