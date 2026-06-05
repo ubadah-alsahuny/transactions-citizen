@@ -54,6 +54,14 @@ p {
   text-align: center;
 }
 
+div:last-child {
+  margin-bottom: 0 !important;
+}
+
+ul {
+  list-style: none;
+}
+
 /* =========================
    Buttons (UI system hook)
    ========================= */

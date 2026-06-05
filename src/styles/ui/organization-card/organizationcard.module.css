@@ -1,6 +1,6 @@
 .cardLayout {
-    width: 13rem;
-    height: 20rem;
+    width: 14rem;
+
     display: flex;
     flex-direction: column;
     background-color: var(--color-primary);
@@ -14,8 +14,9 @@
 }
 
 .imageSettings {
-    height: 13rem;
-    width: 13rem;
+    display: flex;
+    height: 14rem;
+    width: 100%;
     background-color: white;
 }
 

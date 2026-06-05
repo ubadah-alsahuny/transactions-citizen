@@ -38,7 +38,8 @@ export function Card ({
                         :
                         "25%"
             }}>
-                <img src={image} alt={"card_image"} className={styles.image_settings}/>
+                { image ?
+                <img src={image} alt={"card_image"} className={styles.image_settings}/> : null}
             </div>
             <div style={
                 {
@@ -52,7 +53,7 @@ export function Card ({
         </div>
             {buttonLabel != null || buttonIcon != null
                 ?
-                <div style={{placeItems: 'end', marginLeft: '2rem'}}>
+                <div style={{placeItems: 'end'}}>
                     <Button
                         variant={'card'}
                         children={

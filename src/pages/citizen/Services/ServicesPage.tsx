@@ -2,46 +2,82 @@ import {PageContainer} from "@/layouts/PageContainer.tsx";
 import {Section} from "@/layouts/Section.tsx";
 import OrganizationCard from "@/components/ui/organization-card/OrganizationCard.tsx";
 import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {apiRequest} from "@/data/api.ts";
+import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 
 export default function ServicesPage() {
-    const organizations = [
-        {id: 1, type: 'o', name: 'دائرة السجل المدني', description: 'بيانات ولادة ووفيات، قيد عائلية وفردية، هوية شخصية'},
-        {id: 2, type: 'o', name: 'دائرة السجل العقاري', description: 'بيع ورهن وهبة، بيان قيد عقاري'},
-        {id: 3, type: 'o', name: 'دائرة النقل', description: 'بين وإفراغ السيارات والمركبات، بيان إطلاع عن المركبة'},
-        {id: 4, type: 'o', name: 'دائرة الهاتف', description: 'بين وإفراغ السيارات والمركبات، بيان إطلاع عن المركبة'},
-        {id: 5, type: 'u', name: 'جامعة حلب', description: 'براءة ذمة، كشف علامات، بطاقة جامعية'},
-        {id: 6, type: 'u', name: 'جامعة دمشق', description: 'براءة ذمة، كشف علامات، بطاقة جامعية'},
-        {id: 7, type: 'u', name: 'جامعة حمص', description: 'براءة ذمة، كشف علامات، بطاقة جامعية'},
-        {id: 8, type: 'u', name: 'جامعة اللاذقية', description: 'براءة ذمة، كشف علامات، بطاقة جامعية'},
-        {id: 9, type: 'u', name: 'جامعة حماه', description: 'براءة ذمة، كشف علامات، بطاقة جامعية'},
-        {id: 10, type: 'u', name: 'جامعة إدلب', description: 'براءة ذمة، كشف علامات، بطاقة جامعية'},
-    ]
+    interface institution {
+        id: number;
+        name: string;
+        description: string;
+        paragraph_photos: string[];
+    }
 
     const navigation = useNavigate();
+
+    const [institutions, setInstitutions] = useState<institution[]>([]);
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const handleInstitutions  = async () => {
+
+            setIsLoading(true);
+
+            try {
+                const data = await apiRequest('/citizen/institutions');
+                setInstitutions(data.data);
+            } catch (e: any) {
+                setError(e.message);
+                console.log(e.message);
+            }
+            finally {
+                setIsLoading(false);
+            }
+        }
+
+        handleInstitutions();
+    }, []);
+
+    if(isLoading) {
+        return (
+            LoadingCircle({color: 'white'})
+        );
+    }
+
+    if (error) {
+        return (
+            <PageContainer>
+                <h2>
+                    حدث خطأ ما، أعد المحاولة لاحقاً
+                </h2>
+                <p>
+                    {error}
+                </p>
+            </PageContainer>
+        )
+    }
 
     return (
         <PageContainer>
             {/*<Input label={"ابحث عن معاملة"} icon={<FaSearch/>} ></Input>*/}
-            <Section title={"الدوائر الحكومية"}>
-                <ul style={{listStyle: 'none', display: 'flex', flexDirection: 'row', gap: '2.5rem', flexWrap: 'wrap', placeContent: 'space-between'}}>
-                    {organizations.map((organization) => (
-                        organization.type == 'o' ?
-                        <li key={organization.id} onClick={() => {navigation(`organization/${organization.id}`, {state: organization})}}>
-                            <OrganizationCard name={organization.name} description={organization.description}></OrganizationCard>
-                        </li> : ''
-                    ))}
-                </ul>
-            </Section>
-            <Section title={"الجامعات"}>
-                <ul style={{listStyle: 'none', display: 'flex', flexDirection: 'row', gap: '2.5rem', flexWrap: 'wrap', placeContent: 'space-between'}}>
-                    {organizations.map((organization) => (
-                        organization.type == 'u' ?
-                            <li key={organization.id} onClick={() => {navigation(`organization/${organization.id}`, {state: organization})}}>
-                                <OrganizationCard name={organization.name} description={organization.description}></OrganizationCard>
-                            </li> : ''
-                    ))}
-                </ul>
-            </Section>
+                {institutions.length != 0 ?
+                    <Section title={"الدوائر الحكومية"}>
+                        <ul style={{listStyle: 'none', display: 'flex', gap: '1rem', width: '100%', flexWrap: 'wrap'}}>
+                            {institutions.map((institution) => (
+                                <li key={institution.id}>
+                                    <OrganizationCard name={institution.name} onClick={() => {navigation(`institution/${institution.id}`, {state: institution});}}></OrganizationCard>
+                                </li>
+                            ))}
+                        </ul>
+                    </Section>
+                    :
+                    <h1>
+                        "لا يوجد دوائر حكومية بعد"
+                    </h1>
+                }
         </PageContainer>
     )
 }

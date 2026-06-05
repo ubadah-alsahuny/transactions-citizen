@@ -1,0 +1,9 @@
+.badge_container{
+    display: flex;
+    padding: 0 1rem;
+    border-radius: 2rem;
+    corner-shape: squircle;
+    place-items: center;
+    color: var(--color-text);
+    background-color: var(--color-primary);
+}

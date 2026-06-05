@@ -27,14 +27,14 @@ export const router = createBrowserRouter([
         children: [
             { path: 'dashboard', element: <CitizenDashboard /> },
             { path: 'new', element: <NewTransactionPage /> },
-            { path: 'transaction/:id', element: <TransactionDetailsPage /> },
             { path: 'documents', element: <MyDocumentsPage /> },
             { path: 'account', element: <AccountPage />},
             {
                 path: 'services',
                 children: [
                     { index: true, element: <ServicesPage />},
-                    { path: 'organization/:id', element: <ServiceDetailsPage />},
+                    { path: 'institution/:id', element: <ServiceDetailsPage />},
+                    { path: 'transaction/:id', element: <TransactionDetailsPage />},
                 ]},
         ]
     },

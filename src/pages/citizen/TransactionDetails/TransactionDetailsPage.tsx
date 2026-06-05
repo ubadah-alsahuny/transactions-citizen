@@ -1,3 +1,159 @@
+import {PageContainer} from "@/layouts/PageContainer.tsx";
+import {Section} from "@/layouts/Section.tsx";
+import {useEffect, useState} from "react";
+import {apiRequest} from "@/data/api.ts";
+import {useLocation} from "react-router-dom";
+import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
+import {MdArrowBackIos} from "react-icons/md";
+import Input from "@/components/ui/input/Input.tsx";
+import {IoMdCard} from "react-icons/io";
+import {Button} from "@/components/ui/button/Button.tsx";
+
+type TransactionSteps = {
+    order: number;
+    sectionId: string;
+    sectionName: string;
+}
+
+type RequiredInitialData = {
+    id: string;
+    keyName: string;
+    keyType: string;
+    isRequired: boolean;
+}
+
+type TransactionDetails = {
+    id: string;
+    name: string;
+    description: string;
+    steps: TransactionSteps[];
+    requiredIntialData: RequiredInitialData[];
+}
+
 export default function TransactionDetailsPage() {
-    return <h1>Transaction Details</h1>
+    const [transactionDetails, setTransactionDetails] = useState<TransactionDetails | null>(null);
+    const [formData, setFormData] = useState<Record<string, string>>({});
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSubmitLoading, setIsSubmitLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const handleTransaction = async () => {
+            setIsLoading(true);
+
+            try{
+                const data = await apiRequest(`/citizen/transactions/${transactionID}`);
+                setTransactionDetails(data.data);
+            } catch (e: any) {
+                setError(e.message);
+            }
+            finally {
+                setIsLoading(false);
+            }
+        }
+
+        handleTransaction();
+    }, []);
+
+    const handleInputChange = (fieldId: string, value: string) => {
+        setFormData(prev => ({
+            ...prev,
+            [fieldId]: value
+        }));
+    };
+
+    const handleSubmitTransaction = async () => {
+        setIsSubmitLoading(true);
+
+        try{
+            const payload = {
+                transactionId: transactionID,
+                initialData: Object.entries(formData).map(([id, value]) => ({
+                    fieldId: id,
+                    value: value
+                }))
+            };
+
+            const data = apiRequest(`citizen/transactions/${transactionID}/request`, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+            });
+        } catch (e: any) {
+            setError(e.message);
+        } finally {
+            setIsSubmitLoading(false);
+        }
+    }
+
+    const location = useLocation();
+    const transactionID = location.pathname.split("/")[4];
+    console.log(transactionID);
+
+    if (isLoading) {
+        return (
+            <LoadingCircle color={'white'}></LoadingCircle>
+        )
+    }
+
+    if (error) {
+        return (
+            <PageContainer>
+                <h2>
+                    حدث خطأ ما، أعد المحاولة لاحقاً
+                </h2>
+                <p>
+                    {error}
+                </p>
+            </PageContainer>
+        )
+    }
+
+    return (
+        <PageContainer>
+            <Section title={`تفاصيل معاملة ` + transactionDetails?.name}>
+                <div>
+                    <h3 style={{placeSelf: 'start'}}>خطوات المعاملة</h3>
+                    <ul style={{display: 'flex', gap: '2rem', flexWrap: 'wrap'}}>
+                        {transactionDetails?.steps.map((step) => (
+                            <div style={{display: 'flex', placeItems: 'center', gap: '2rem'}}>
+                                <li key={step.order}>
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        padding: '1rem',
+                                        borderRadius: '2rem',
+                                        backgroundColor: 'var(--color-primary)'
+                                    }}>
+                                        <h5>الخطوة {step.order}</h5>
+                                        <h4>
+                                            {step.sectionName}
+                                        </h4>
+                                    </div>
+                                </li>
+                                {step.order == transactionDetails?.steps.length ? null :
+                                    <MdArrowBackIos color={'var(--color-text)'}/>}
+                            </div>
+                        ))}
+                    </ul>
+                </div>
+
+                <div style={{width: '100%', display: 'flex', flexDirection: 'column'}}>
+                    <h3 style={{placeSelf: 'start'}}>متطلبات المعاملة</h3>
+                    <form style={{width: '40%'}} onSubmit={handleSubmitTransaction}>
+                        <ul>
+                            {transactionDetails?.requiredIntialData.map((data) => (
+                                <div key={data.id} style={{display: 'flex', placeItems: 'center', gap: '2rem', width: '100%'}}>
+                                    <Input onChange={(value: string) => handleInputChange(data.id, value)}
+                                           label={data.keyName} icon={<IoMdCard size={22}/>}
+                                           required={data.isRequired} value={formData[data.id]}></Input>
+                                </div>
+                            ))}
+                        </ul>
+                        <Button type={'submit'} variant={'submit'}>التقديم على المعاملة <MdArrowBackIos/></Button>
+                    </form>
+                </div>
+            </Section>
+        </PageContainer>
+    )
 }
