@@ -2,12 +2,13 @@ import {PageContainer} from "@/layouts/PageContainer.tsx";
 import {Section} from "@/layouts/Section.tsx";
 import {useEffect, useState} from "react";
 import {apiRequest} from "@/data/api.ts";
-import {useLocation} from "react-router-dom";
+import {Navigate, useLocation} from "react-router-dom";
 import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 import {MdArrowBackIos} from "react-icons/md";
 import Input from "@/components/ui/input/Input.tsx";
 import {IoMdCard} from "react-icons/io";
 import {Button} from "@/components/ui/button/Button.tsx";
+import StepCard from "@/components/ui/step-card/StepCard.tsx";
 
 type TransactionSteps = {
     order: number;
@@ -37,6 +38,8 @@ export default function TransactionDetailsPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    /*const [isSuccess, setIsSuccess] = useState(false);*/
 
     useEffect(() => {
         const handleTransaction = async () => {
@@ -79,8 +82,10 @@ export default function TransactionDetailsPage() {
                 method: 'POST',
                 bodyData: payload,
             });
+            /*setIsSuccess(data.success);*/
 
             console.log(data);
+            console.log("Status code is " + data.success);
         } catch (e: any) {
             setError(e.message);
         } finally {
@@ -120,18 +125,7 @@ export default function TransactionDetailsPage() {
                         {transactionDetails?.steps.map((step) => (
                             <div style={{display: 'flex', placeItems: 'center', gap: '2rem'}}>
                                 <li key={step.order}>
-                                    <div style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        padding: '1rem',
-                                        borderRadius: '2rem',
-                                        backgroundColor: 'var(--color-primary)'
-                                    }}>
-                                        <h5>الخطوة {step.order}</h5>
-                                        <h4>
-                                            {step.sectionName}
-                                        </h4>
-                                    </div>
+                                    <StepCard stepOrder={step.order} sectionName={step.sectionName}></StepCard>
                                 </li>
                                 {step.order == transactionDetails?.steps.length ? null :
                                     <MdArrowBackIos color={'var(--color-text)'}/>}
@@ -154,7 +148,10 @@ export default function TransactionDetailsPage() {
                         </ul>
                         <Button type={'submit'} variant={'submit'}>
                             {isSubmitLoading ?
-                                ''
+                                <div>
+                                    يتم إنشاء المعاملة
+                                    <Navigate to={'/citizen/documents'} replace></Navigate>
+                                </div>
                                 :
                                 <div>
                                     التقديم على المعاملة <MdArrowBackIos/>

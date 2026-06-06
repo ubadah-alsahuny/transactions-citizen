@@ -5,6 +5,7 @@ import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 import {Section} from "@/layouts/Section.tsx";
 import {PageContainer} from "@/layouts/PageContainer.tsx";
 import {TransactionCard} from "@/components/ui/transaction-card/TransactionCard.tsx";
+import {mapStatus} from "@/data/mapStatus.ts";
 
 type servicesType = {
     id: number;
@@ -81,21 +82,11 @@ export default function ServiceDetailsPage () {
                 {transactions.length !== 0 ?
                     <ul>
                         {transactions.map((t) => (
-                            t.isActive ?
                                 <li key={t.id}>
                                 <TransactionCard
                                     name={t.name}
                                     description={t.description}
-                                    isActive={t.isActive}
-                                    onClick={() => {
-                                        navigate(`/citizen/services/transaction/${t.id}`)
-                                    }}
-                                ></TransactionCard>
-                            </li> : <li key={t.id}>
-                                <TransactionCard
-                                    name={t.name}
-                                    description={t.description}
-                                    isActive={t.isActive}
+                                    status={mapStatus(t.isActive)}
                                     onClick={() => {
                                         navigate(`/citizen/services/transaction/${t.id}`)
                                     }}

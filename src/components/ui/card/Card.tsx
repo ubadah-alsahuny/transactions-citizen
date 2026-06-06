@@ -7,7 +7,7 @@ type CardVariant = 'user' | 'organization' | 'service'
 type CardType = 'vertical' | 'horizontal'
 
 type CardProps = {
-    width: string,
+    width?: string,
     height: string,
     children: React.ReactNode
     image?: React.ReactNode
@@ -19,7 +19,7 @@ type CardProps = {
 }
 
 export function Card ({
-                          width,
+                          width = '30%',
                           height,
                           children,
                           image,

@@ -5,15 +5,19 @@ import {Card} from "@/components/ui/card/Card.tsx";
 import {apiRequest} from "@/data/api.ts";
 import {useEffect, useRef, useState} from "react";
 import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
-import {MdPerson} from "react-icons/md";
+import {MdAlternateEmail, MdDateRange, MdPerson} from "react-icons/md";
 import {IoMdCard} from "react-icons/io";
 import {BiCake} from "react-icons/bi";
+import {IoWoman} from "react-icons/io5";
 
 export default function AccountPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [citizenName, setCitizenName] = useState('');
+    const [citizenMotherName, setCitizenMotherName] = useState('');
     const [citizenDateOfBirth, setCitizenDateOfBirth] = useState('');
+    const [citizenEmail, setCitizenEmail] = useState('');
     const [citizenNationalId, setCitizenNationalId] = useState('');
+    const [citizenAccountCreationDate, setCitizenAccountCreationDate] = useState('');
 
     const [error, setError] = useState('');
 
@@ -29,11 +33,18 @@ export default function AccountPage() {
                 const data = await apiRequest('/citizen/profile');
 
                 const date = new Date(data.data.dateOfBirth);
+                const creationDate = new Date(data.data.createdAt);
                 const formatedDate = date.toLocaleDateString('en-US');
+                const formatedCreationDate = creationDate.toLocaleDateString('en-US');
+
+                console.log(data.data);
 
                 setCitizenName(data.data.fullName);
+                setCitizenMotherName(data.data.motherName);
                 setCitizenDateOfBirth(formatedDate);
                 setCitizenNationalId(data.data.nationalId);
+                setCitizenEmail(data.data.email);
+                setCitizenAccountCreationDate(formatedCreationDate);
             } catch (error: any) {
                 setError(error.message);
                 console.log(error.message);
@@ -61,10 +72,9 @@ export default function AccountPage() {
     return(
         <PageContainer>
             <Section title={"حسابك الشخصي"} id={"personal-account"}>
-                <div style={{placeItems: "center", display: "flex", flexDirection: "row", gap: "3rem"}}>
+                <div style={{placeItems: "center", display: "flex", flexDirection: "row", gap: "3rem", flexWrap: 'wrap'}}>
                     <Card
                         type="vertical"
-                        width={"100%"}
                         height={"100%"}
                         variant={'user'}
                         children={
@@ -79,9 +89,9 @@ export default function AccountPage() {
                         }
                         /*buttonIcon={<FaUserEdit/>} buttonLabel={<p>تغيير الصورة الشخصية</p>}*/
                     />
+
                     <Card
                         type="vertical"
-                        width={"100%"}
                         height={"100%"}
                         variant={'user'}
                         children={
@@ -97,7 +107,6 @@ export default function AccountPage() {
 
                     <Card
                         type="vertical"
-                        width={"100%"}
                         height={"100%"}
                         variant={'user'}
                         children={
@@ -109,6 +118,57 @@ export default function AccountPage() {
                                 <h4>{citizenDateOfBirth}</h4>
                             </>
                         }
+                    />
+
+                    <Card
+                        type="vertical"
+                        height={"100%"}
+                        variant={'user'}
+                        children={
+                            <>
+                                <div style={{width: '100%', display: 'flex', flexDirection: 'column', placeItems: 'center'}}>
+                                    <IoWoman size={40} color={'var(--color-action)'}/>
+                                    <h3>اسم الأم</h3>
+                                </div>
+                                <h4>{citizenMotherName}</h4>
+                                {/*<p style={{fontSize: "0.7rem"}}>صورة بخلفية بيضاء معتمدة لصاحب الحساب</p>*/}
+                            </>
+                        }
+                        /*buttonIcon={<FaUserEdit/>} buttonLabel={<p>تغيير الصورة الشخصية</p>}*/
+                    />
+
+                    <Card
+                        type="vertical"
+                        height={"100%"}
+                        variant={'user'}
+                        children={
+                            <>
+                                <div style={{width: '100%', display: 'flex', flexDirection: 'column', placeItems: 'center'}}>
+                                    <MdAlternateEmail size={40} color={'var(--color-action)'}/>
+                                    <h3>البريد الإلكتروني</h3>
+                                </div>
+                                <h4>{citizenEmail}</h4>
+                                {/*<p style={{fontSize: "0.7rem"}}>صورة بخلفية بيضاء معتمدة لصاحب الحساب</p>*/}
+                            </>
+                        }
+                        /*buttonIcon={<FaUserEdit/>} buttonLabel={<p>تغيير الصورة الشخصية</p>}*/
+                    />
+
+                    <Card
+                        type="vertical"
+                        height={"100%"}
+                        variant={'user'}
+                        children={
+                            <>
+                                <div style={{width: '100%', display: 'flex', flexDirection: 'column', placeItems: 'center'}}>
+                                    <MdDateRange size={35} color={'var(--color-action)'}/>
+                                    <h3>تاريخ إنشاء الحساب</h3>
+                                </div>
+                                <h4>{citizenAccountCreationDate}</h4>
+                                {/*<p style={{fontSize: "0.7rem"}}>صورة بخلفية بيضاء معتمدة لصاحب الحساب</p>*/}
+                            </>
+                        }
+                        /*buttonIcon={<FaUserEdit/>} buttonLabel={<p>تغيير الصورة الشخصية</p>}*/
                     />
                 </div>
             </Section>

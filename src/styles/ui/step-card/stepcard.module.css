@@ -1,0 +1,16 @@
+.card_container{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 2rem;
+    corner-shape: squircle;
+    background-color: var(--color-primary);
+
+    user-select: none;
+
+    transition: all 0.2s ease;
+}
+
+.card_container:hover{
+    transform: translateY(-0.25rem);
+}
