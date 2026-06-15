@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import Landing from '../pages/public/Landing'
+import Landing from '../pages/public/Landing.tsx'
 import Login from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
 
@@ -15,6 +15,7 @@ import ServicesPage from "../pages/citizen/Services/ServicesPage.tsx";
 import ServiceDetailsPage from '../pages/citizen/ServiceDetails/ServiceDetailsPage.tsx';
 
 import NotFound from '../pages/system/NotFound'
+import SubmittedTransactionDetails from "@/pages/citizen/SubmittedTransactionDetails/SubmittedTransactionDetails.tsx";
 
 export const router = createBrowserRouter([
     { path: '/', element: <Landing /> },
@@ -29,13 +30,15 @@ export const router = createBrowserRouter([
             { path: 'new', element: <NewTransactionPage /> },
             { path: 'documents', element: <MyDocumentsPage /> },
             { path: 'account', element: <AccountPage />},
+            { path: 'transaction/:id', element: <SubmittedTransactionDetails/> },
             {
                 path: 'services',
                 children: [
                     { index: true, element: <ServicesPage />},
                     { path: 'institution/:id', element: <ServiceDetailsPage />},
                     { path: 'transaction/:id', element: <TransactionDetailsPage />},
-                ]},
+                ]
+            },
         ]
     },
 

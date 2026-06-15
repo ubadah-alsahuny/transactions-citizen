@@ -1,11 +1,11 @@
-import {useLocation, useNavigate} from "react-router-dom";
-import {apiRequest} from "@/data/api.ts";
+import {useNavigate, useParams} from "react-router-dom";
+import {apiRequest} from "@/data/api/api.ts";
 import {useEffect, useState} from "react";
 import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 import {Section} from "@/layouts/Section.tsx";
 import {PageContainer} from "@/layouts/PageContainer.tsx";
 import {TransactionCard} from "@/components/ui/transaction-card/TransactionCard.tsx";
-import {mapStatus} from "@/data/mapStatus.ts";
+import {mapStatus} from "@/data/utils/mapStatus.ts";
 
 type servicesType = {
     id: number;
@@ -19,28 +19,29 @@ type transaction = {
     name: string;
     description: string;
     isActive: boolean;
+    institutionName: string,
 }
 
 export default function ServiceDetailsPage () {
     const [transactions, setTransactions] = useState<transaction[]>([]);
+    const [institutionName, setInstitutionName] = useState('');
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const navigate = useNavigate();
-
-    const location = useLocation();
-    const institutionID = location.pathname.split("/")[4];
-
-    const organization = location.state as servicesType | null;
+    const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
         const handleInstitutionTransactions = async () => {
             setIsLoading(true);
 
             try{
-                const data = await apiRequest(`/citizen/institutions/${institutionID}/transactions?page=1&limit=10`);
+                const data = await apiRequest(`/citizen/institutions/${id}/transactions?page=1&limit=10`);
                 setTransactions(data.data);
+                console.log(data.data);
+                setInstitutionName(data.data.institutionName);
+                console.log(data.data.institutionName);
             } catch (e: any) {
                 setError(e.message);
             } finally {
@@ -50,12 +51,6 @@ export default function ServiceDetailsPage () {
 
         handleInstitutionTransactions();
     }, []);
-
-    if (!organization) {
-        return <div>
-            لم يتم العثور على الخدمة!
-        </div>
-    }
 
     if (isLoading) {
         return (
@@ -78,7 +73,7 @@ export default function ServiceDetailsPage () {
 
     return (
         <PageContainer>
-            <Section title={organization.name}>
+            <Section title={institutionName}>
                 {transactions.length !== 0 ?
                     <ul>
                         {transactions.map((t) => (

@@ -11,10 +11,12 @@ import { toggleTheme } from '@/theme/theme.ts';
 import {useState} from "react";
 import {BsLayoutSidebarInset} from "react-icons/bs";
 import {useNavigate} from "react-router-dom";
-import {Logout} from "@/data/logout.ts";
+import {useAuth} from "@/data/auth/auth.ts";
 
 export function Header() {
     const navigate = useNavigate();
+
+    const { logout } = useAuth();
 
     const headerItems = [
         {id: 'dashboard', label: 'الرئيسية'},
@@ -46,7 +48,7 @@ export function Header() {
                         {item.label}
                     </Button>
                 ))}
-                    <Button variant={'header'} onClick={() => {Logout(); navigate('/login')}}>
+                    <Button variant={'header'} onClick={() => { logout(); }}>
                         تسجيل خروج
                     </Button>
                 </nav>

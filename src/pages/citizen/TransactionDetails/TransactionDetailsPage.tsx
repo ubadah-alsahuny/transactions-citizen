@@ -1,14 +1,15 @@
 import {PageContainer} from "@/layouts/PageContainer.tsx";
 import {Section} from "@/layouts/Section.tsx";
 import {useEffect, useState} from "react";
-import {apiRequest} from "@/data/api.ts";
-import {Navigate, useLocation} from "react-router-dom";
+import {apiRequest} from "@/data/api/api.ts";
+import {Navigate, useLocation, useNavigate} from "react-router-dom";
 import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 import {MdArrowBackIos} from "react-icons/md";
 import Input from "@/components/ui/input/Input.tsx";
 import {IoMdCard} from "react-icons/io";
 import {Button} from "@/components/ui/button/Button.tsx";
 import StepCard from "@/components/ui/step-card/StepCard.tsx";
+import {mapInputType} from "@/data/utils/mapInputType.ts";
 
 type TransactionSteps = {
     order: number;
@@ -37,9 +38,9 @@ export default function TransactionDetailsPage() {
 
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
 
-    /*const [isSuccess, setIsSuccess] = useState(false);*/
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleTransaction = async () => {
@@ -69,6 +70,7 @@ export default function TransactionDetailsPage() {
     const handleSubmitTransaction = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitLoading(true);
+        setError(null);
 
         try{
             const payload = {
@@ -76,16 +78,17 @@ export default function TransactionDetailsPage() {
                 intialData: formData,
             };
 
-            console.log(payload);
-
             const data = await apiRequest(`/citizen/transactions/${transactionID}/request`, {
                 method: 'POST',
                 bodyData: payload,
             });
-            /*setIsSuccess(data.success);*/
 
-            console.log(data);
-            console.log("Status code is " + data.success);
+            if (data && data.success) {
+                navigate('/citizen/documents', { replace: true });
+            } else {
+                setError("حدث خطأ ما أثناء إرسال الطلب.");
+            }
+
         } catch (e: any) {
             setError(e.message);
         } finally {
@@ -142,7 +145,8 @@ export default function TransactionDetailsPage() {
                                 <div key={data.id} style={{display: 'flex', placeItems: 'center', gap: '2rem', width: '100%'}}>
                                     <Input onChange={(value: string) => handleInputChange(data.keyName, value)}
                                            label={data.keyName} icon={<IoMdCard size={22}/>}
-                                           required={data.isRequired} value={formData[data.keyName]}></Input>
+                                           required={data.isRequired} value={formData[data.keyName] || ''}
+                                           type={mapInputType(data.keyType)}></Input>
                                 </div>
                             ))}
                         </ul>
@@ -150,7 +154,6 @@ export default function TransactionDetailsPage() {
                             {isSubmitLoading ?
                                 <div>
                                     يتم إنشاء المعاملة
-                                    <Navigate to={'/citizen/documents'} replace></Navigate>
                                 </div>
                                 :
                                 <div>

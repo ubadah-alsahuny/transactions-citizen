@@ -3,7 +3,7 @@ import {Section} from "@/layouts/Section.tsx";
 import OrganizationCard from "@/components/ui/organization-card/OrganizationCard.tsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {apiRequest} from "@/data/api.ts";
+import {apiRequest} from "@/data/api/api.ts";
 import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 
 export default function ServicesPage() {
@@ -68,7 +68,7 @@ export default function ServicesPage() {
                         <ul style={{listStyle: 'none', display: 'flex', gap: '1rem', width: '100%', flexWrap: 'wrap'}}>
                             {institutions.map((institution) => (
                                 <li key={institution.id}>
-                                    <OrganizationCard name={institution.name} onClick={() => {navigation(`institution/${institution.id}`, {state: institution});}}></OrganizationCard>
+                                    <OrganizationCard name={institution.name} onClick={() => {navigation(`institution/${institution.id}`);}}></OrganizationCard>
                                 </li>
                             ))}
                         </ul>

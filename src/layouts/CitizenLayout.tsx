@@ -3,6 +3,32 @@ import {Header} from "@/components/navigation/Header.tsx";
 import {Footer} from "@/components/navigation/Footer.tsx";
 import styles from '@/styles/layouts/layouts.module.css'
 
+function isTokenExpired(token: string | null): boolean {
+    if (!token || token === 'undefined' || token === 'null') return true;
+
+    try {
+        const base64Url = token.split('.')[1];
+        if (!base64Url) return true;
+
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            window.atob(base64)
+                .split('')
+                .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+        );
+
+        const { exp } = JSON.parse(jsonPayload);
+
+        if (!exp) return false;
+
+        const currentTime = Math.floor(Date.now() / 1000);
+        return exp < currentTime;
+    } catch (error) {
+        return true;
+    }
+}
+
 export default function CitizenLayout() {
     const location = useLocation();
 
@@ -13,8 +39,9 @@ export default function CitizenLayout() {
 
     console.log(token);
 
-    if (!token || token == 'undefined' || token == null) {
-      return <Navigate to="/login" replace />;
+    if (isTokenExpired(token)) {
+        localStorage.removeItem('citizenToken');
+        return <Navigate to="/login" replace />;
     }
 
     return (

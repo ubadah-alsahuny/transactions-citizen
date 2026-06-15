@@ -2,13 +2,14 @@ import {PageContainer} from "@/layouts/PageContainer.tsx";
 import {Section} from "@/layouts/Section.tsx";
 import {Card} from "@/components/ui/card/Card.tsx";
 
-import {apiRequest} from "@/data/api.ts";
+import {apiRequest} from "@/data/api/api.ts";
 import {useEffect, useRef, useState} from "react";
 import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 import {MdAlternateEmail, MdDateRange, MdPerson} from "react-icons/md";
 import {IoMdCard} from "react-icons/io";
 import {BiCake} from "react-icons/bi";
 import {IoWoman} from "react-icons/io5";
+import {formatDate, formatDateAndTime} from "@/data/utils/formatDateAndTime.ts";
 
 export default function AccountPage() {
     const [isLoading, setIsLoading] = useState(false);
@@ -32,10 +33,8 @@ export default function AccountPage() {
             try {
                 const data = await apiRequest('/citizen/profile');
 
-                const date = new Date(data.data.dateOfBirth);
-                const creationDate = new Date(data.data.createdAt);
-                const formatedDate = date.toLocaleDateString('en-US');
-                const formatedCreationDate = creationDate.toLocaleDateString('en-US');
+                const formatedDate = formatDate(data.data.dateOfBirth);
+                const formatedCreationDate = formatDateAndTime(data.data.createdAt);
 
                 console.log(data.data);
 
@@ -134,7 +133,6 @@ export default function AccountPage() {
                                 {/*<p style={{fontSize: "0.7rem"}}>صورة بخلفية بيضاء معتمدة لصاحب الحساب</p>*/}
                             </>
                         }
-                        /*buttonIcon={<FaUserEdit/>} buttonLabel={<p>تغيير الصورة الشخصية</p>}*/
                     />
 
                     <Card
@@ -151,7 +149,6 @@ export default function AccountPage() {
                                 {/*<p style={{fontSize: "0.7rem"}}>صورة بخلفية بيضاء معتمدة لصاحب الحساب</p>*/}
                             </>
                         }
-                        /*buttonIcon={<FaUserEdit/>} buttonLabel={<p>تغيير الصورة الشخصية</p>}*/
                     />
 
                     <Card
@@ -165,10 +162,8 @@ export default function AccountPage() {
                                     <h3>تاريخ إنشاء الحساب</h3>
                                 </div>
                                 <h4>{citizenAccountCreationDate}</h4>
-                                {/*<p style={{fontSize: "0.7rem"}}>صورة بخلفية بيضاء معتمدة لصاحب الحساب</p>*/}
                             </>
                         }
-                        /*buttonIcon={<FaUserEdit/>} buttonLabel={<p>تغيير الصورة الشخصية</p>}*/
                     />
                 </div>
             </Section>

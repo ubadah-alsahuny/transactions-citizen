@@ -14,6 +14,7 @@ export function mapStatus(status: string | boolean | null | undefined): string {
         case 'pending':
             return 'في حالة انتظار';
         case 'approved':
+        case 'completed':
         case 'accepted':
             return 'مقبول';
         case 'rejected':

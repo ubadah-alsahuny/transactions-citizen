@@ -1,38 +1,18 @@
-import {useEffect, useState} from "react";
-import {apiRequest} from "@/data/api.ts";
+import {useEffect} from "react";
 import {TransactionCard} from "@/components/ui/transaction-card/TransactionCard.tsx";
 import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 import {PageContainer} from "@/layouts/PageContainer.tsx";
 import {Section} from "@/layouts/Section.tsx";
-import {mapStatus} from '@/data/mapStatus.ts';
-
-type Transaction = {
-    transactionName: string,
-    institutionName: string,
-    status: string,
-    currentStep: number,
-}
+import {mapStatus} from '@/data/utils/mapStatus.ts';
+import {useTransactions} from "@/data/transactions/useTransactions.ts";
+import {useNavigate} from "react-router-dom";
 
 export default function MyDocumentsPage() {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState("");
-
-    const [myDocuments, setMyDocuments] = useState<Transaction[]>([]);
+    const navigate = useNavigate();
+    const { fetchTransactions, myDocuments, isLoading, error } = useTransactions();
 
     useEffect(() => {
-        const handleShowDocuments = async () => {
-            setIsLoading(true);
-            try {
-                const data = await apiRequest('/citizen/transactions/requests/list');
-                setMyDocuments(data.data);
-            } catch (e: any) {
-                setError(e.message);
-            } finally {
-                setIsLoading(false);
-            }
-        }
-
-        handleShowDocuments();
+        fetchTransactions();
     }, []);
 
     if (isLoading) {
@@ -65,7 +45,7 @@ export default function MyDocumentsPage() {
                     {myDocuments.map((d) => (
                         <li>
                             <TransactionCard name={d.transactionName} description={d.institutionName} status={mapStatus(d.status)}
-                                             onClick={() => {}}>
+                                             onClick={() => {navigate(`/citizen/transaction/${d.id}`)}}>
                             </TransactionCard>
                         </li>
                     ))}

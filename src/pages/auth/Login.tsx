@@ -5,51 +5,18 @@ import {Si1Password} from "react-icons/si";
 import {Button} from "@/components/ui/button/Button.tsx";
 import {FaPaperPlane} from "react-icons/fa";
 import {PageContainer} from "@/layouts/PageContainer.tsx";
-import {useState} from "react";
-import {apiRequest} from "@/data/api.ts";
-import {useNavigate} from "react-router-dom";
 import {MdAlternateEmail} from "react-icons/md";
 import {ErrorMessage} from "@/components/ui/error-message/ErrorMessage.tsx";
 import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
+import {useForm} from "@/data/utils/useForm.ts";
+import {useAuth} from "@/data/auth/auth.ts";
 
 export default function Login() {
-    const navigate = useNavigate();
+    const { formData, updateField } = useForm({
+        nationalId: '', email: '', password: '',
+    });
 
-    // Login Information //
-    const [nationalId, setNationalId] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    // Error & Loading //
-    const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-
-        setIsLoading(true);
-
-        try {
-            const data = await apiRequest('/citizen/login', {
-                method: 'POST',
-                bodyData: {
-                    nationalId,
-                    email,
-                    password
-                }
-            });
-
-            localStorage.setItem('citizenToken', data.data.token);
-
-            navigate('/citizen/dashboard');
-        } catch (error: any) {
-            setError(error.message)
-            console.log(error.message || 'حدث خطأ أثناء عملية تسجيل الدخول، حاول مرة أخرى')
-        } finally {
-            setIsLoading(false);
-        }
-    }
+    const { login, error, isLoading } = useAuth();
 
     return <PageContainer>
         <div style={{width: '100%', height: '100vh', placeContent: "center"}}>
@@ -59,22 +26,22 @@ export default function Login() {
                 <h1>
                     سجل دخول
                 </h1>
-                <form onSubmit={handleLogin}
+                <form onSubmit={(e) => { e.preventDefault(); login(formData); }}
                       style={{width: '100%', placeContent: 'center', placeItems: 'center', placeSelf: 'center'}}>
                     <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
-                        <Input onChange={setNationalId}
+                        <Input onChange={updateField('nationalId')}
                                label={"الرقم الوطني"} type={'text'}
-                               value={nationalId}
+                               value={formData.nationalId}
                                icon={<IoMdCard size={22}/>} required={true}></Input>
 
-                        <Input onChange={setEmail}
+                        <Input onChange={updateField('email')}
                                label={"البريد الالكتروني"} type={'email'}
-                               value={email}
+                               value={formData.email}
                                icon={<MdAlternateEmail size={22}/>} required={true}></Input>
 
-                        <Input onChange={setPassword}
+                        <Input onChange={updateField('password')}
                                label={"كلمة المرور"} type={'password'}
-                               value={password}
+                               value={formData.password}
                                icon={<Si1Password size={20}/>}
                                required={true}></Input>
                     </div>
