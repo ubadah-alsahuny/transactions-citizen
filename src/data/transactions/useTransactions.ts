@@ -37,7 +37,7 @@ export function useTransactions () {
             const response = await apiRequest('/citizen/transactions/requests/list');
             setMyDocuments(response.data);
         } catch (e: any) {
-            setError(e.message);
+            setError('حدث خطأ في جلب البيانات، تحقق من وجود الانترنت وعِد المحاولة لاحقاً');
         } finally {
             setIsLoading(false);
         }
@@ -48,8 +48,9 @@ export function useTransactions () {
         try {
             const response = await apiRequest(`/citizen/transactions/requests/${transactionId}`);
             setTransaction(response.data);
+            console.log(response.data);
         } catch (e: any) {
-            setError(e.message);
+            setError('حدث خطأ في جلب البيانات، تحقق من وجود الانترنت وعِد المحاولة لاحقاً');
         } finally {
             setIsLoading(false);
         }

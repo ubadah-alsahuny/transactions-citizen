@@ -1,6 +1,5 @@
 import React from "react";
 import {Button} from "@/components/ui/button/Button.tsx";
-
 import styles from '@/styles/ui/card/card.module.css';
 
 type CardVariant = 'user' | 'organization' | 'service'
@@ -16,56 +15,45 @@ type CardProps = {
     onButtonClick?: () => void
     variant?: CardVariant
     type: CardType
+    className?: string // Appends custom individual overrides cleanly
 }
 
 export function Card ({
-                          width = '30%',
+                          width,
                           height,
                           children,
                           image,
                           buttonLabel,
                           buttonIcon,
                           onButtonClick,
-                          type
+                          type,
+                          className = ''
                       }: CardProps) {
     return (
-        <div className={styles.card_container} style={{width, height, flexDirection: type == 'vertical' ? "column" : "row"}}>
-            <div
-                className={styles.image_container}
-                style={{width: type == 'vertical'
-                        ?
-                        "100%"
-                        :
-                        "25%"
-            }}>
-                { image ?
-                <img src={image} alt={"card_image"} className={styles.image_settings}/> : null}
-            </div>
-            <div style={
-                {
-
-                    display: 'flex',
-                    flex: 'wrap',
-                    flexDirection: 'column',
-                    placeContent: 'center'}}
-            >
-                {children}
-        </div>
-            {buttonLabel != null || buttonIcon != null
-                ?
-                <div style={{placeItems: 'end'}}>
-                    <Button
-                        variant={'card'}
-                        children={
-                            <div>
-                                {buttonLabel}
-                                {buttonIcon}
-                            </div>
-                        }
-                        onClick={onButtonClick}/>
+        <div
+            className={`${styles.card_container} ${type === 'vertical' ? styles.vertical : styles.horizontal} ${className}`}
+            style={{width, height}}
+        >
+            {image && (
+                <div className={`${styles.image_container} ${type === 'vertical' ? styles.img_vertical : styles.img_horizontal}`}>
+                    <img src={image} alt={"card_image"} className={styles.image_settings}/>
                 </div>
-                :
-                ""}
+            )}
+
+            <div className={styles.body_container}>
+                {children}
+            </div>
+
+            {(buttonLabel != null || buttonIcon != null) && (
+                <div className={styles.button_container}>
+                    <Button variant={'card'} onClick={onButtonClick}>
+                        <div>
+                            {buttonLabel}
+                            {buttonIcon}
+                        </div>
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }

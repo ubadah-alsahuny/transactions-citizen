@@ -1,6 +1,7 @@
 import styles from '@/styles/ui/table/table.module.css'
+import React from 'react';
 
-interface TableProps<T>{
+interface TableProps<T> {
     headers: string[];
     data: T[];
     renderRow: (item: T) => React.ReactNode;

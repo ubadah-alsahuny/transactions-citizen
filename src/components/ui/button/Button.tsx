@@ -8,21 +8,24 @@ type ButtonProps = {
     type?: 'button' | 'submit'
     disabled?: boolean
     variant?: ButtonVariant
+    className?: string
 }
 
 export function Button({
-                                   children,
-                                   onClick,
-                                   type = 'button',
-                                   disabled = false,
-                                   variant = 'primary'
-                               }: ButtonProps) {
+                           children,
+                           onClick,
+                           type = 'button',
+                           disabled = false,
+                           variant = 'primary',
+                           className = ''
+                       }: ButtonProps) {
     return (
         <button
             type={type}
             onClick={onClick}
             disabled={disabled}
             data-variant={variant}
+            className={className}
         >
             {children}
         </button>

@@ -1,34 +1,29 @@
+// TransactionCard.tsx
 import styles from '@/styles/ui/transaction-card/transactioncard.module.css';
 import StatusBadge from "@/components/ui/status-badge/StatusBadge.tsx";
 
 type CardVariant = 'في حالة انتظار' | 'مقبول' | 'مرفوض' | 'مُفعّل' | 'غير مُفعّل';
 
-type transactionProps = {
+type TransactionProps = {
     name: string;
     description: string;
     status: CardVariant | string;
     onClick: () => void;
 }
 
-export function TransactionCard ( {name, description, status, onClick }: transactionProps ) {
+export function TransactionCard({ name, description, status, onClick }: TransactionProps) {
     return (
         <div onClick={onClick} className={styles.card_container}>
-            <div>
-                <h3>
+            <div className={styles.text_cluster}>
+                <h3 className={styles.card_title}>
                     {name}
                 </h3>
-            </div>
-
-            <div>
-                <h4>
+                <p className={styles.card_description}>
                     {description}
-                </h4>
+                </p>
             </div>
 
-            {status ? <StatusBadge status={status}></StatusBadge>
-                :
-                <StatusBadge status={'لا يوجد حالة'}></StatusBadge>
-            }
+            <StatusBadge status={status} />
         </div>
     )
 }

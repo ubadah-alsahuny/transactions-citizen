@@ -90,7 +90,7 @@ export default function Register() {
                         <Button type={'submit'} variant={'submit'}>
                             <FaPaperPlane size={17}/>
                             {isLoading ?
-                                <LoadingCircle color={'black'}></LoadingCircle>
+                                <LoadingCircle></LoadingCircle>
                                 :
                                 'أنشأ حساب'
                             }

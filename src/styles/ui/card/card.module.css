@@ -1,58 +1,66 @@
 .card_container {
     display: flex;
-
     padding: 1rem 2rem;
-
     place-items: center;
     justify-content: space-between;
-
     border: 1px solid var(--color-outine);
-    border-radius: 2rem;
-    corner-shape: squircle;
-
+    border-radius: 0.25rem;
     overflow: hidden;
-
     transition: all 0.2s ease-in;
 }
 
-.card_container:hover{
-    transform: scale(1.025);
+.card_container:hover {
+    transform: scale(1.01);
 }
 
-/* button contents control */
-.card_container div:last-child {
-    display: grid;
-    place-items: center;
-    gap: 0.5rem;
+.vertical {
+    flex-direction: column;
 }
 
-.card_container div:nth-child(1):nth-last-child(1) {
+.horizontal {
+    flex-direction: row;
+}
+
+.body_container {
     display: flex;
-    place-items: center;
-    gap: 0.7rem;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
 }
 
 .image_container {
     display: flex;
-
     overflow: hidden;
-
     background-color: #988561;
     border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.img_vertical {
+    width: 100%;
+}
+
+.img_horizontal {
+    width: 25%;
 }
 
 .image_settings {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-
     background-color: white;
-
     transition: all 0.2s ease-in-out;
 }
 
-.image_settings:hover{
-    overflow: hidden;
+.image_settings:hover {
     scale: 1.07;
+}
+
+.button_container {
+    place-items: end;
+}
+
+.button_container div {
+    display: grid;
+    place-items: center;
+    gap: 0.5rem;
 }

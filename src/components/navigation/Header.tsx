@@ -4,8 +4,7 @@ import SyrianLogo from '@/assets/images/svg/Syrian_Government_Logo.svg'
 import {Button} from "@/components/ui/button/Button.tsx";
 import {IoMdNotifications} from "react-icons/io";
 import {MdAccountCircle} from "react-icons/md";
-import {FaMoon} from "react-icons/fa";
-import {AiFillSun} from "react-icons/ai";
+import {AiFillMoon, AiFillSun} from "react-icons/ai";
 
 import { toggleTheme } from '@/theme/theme.ts';
 import {useState} from "react";
@@ -55,11 +54,11 @@ export function Header() {
                 <div className={styles.left_panel}>
                     {theme === 'dark-theme'
                         ?
-                        <AiFillSun size={24} className={`${styles.header_icons} ${styles.theme_icons}`} onClick={handleToggleTheme}/>
+                        <AiFillSun className={`${styles.header_icons} ${styles.theme_icons}`} onClick={handleToggleTheme}/>
                         :
-                        <FaMoon size={20} className={styles.header_icons + styles.theme_icons} onClick={handleToggleTheme}/>}
-                    <IoMdNotifications size={25} className={styles.header_icons}/>
-                    <MdAccountCircle size={25} className={styles.header_icons} onClick={() => {navigate("/citizen/account")}}/>
+                        <AiFillMoon className={`${styles.header_icons} ${styles.theme_icons}`} onClick={handleToggleTheme}/>}
+                    <IoMdNotifications className={styles.header_icons}/>
+                    <MdAccountCircle className={styles.header_icons} onClick={() => {navigate("/citizen/account")}}/>
                 </div>
             </div>
         </header>

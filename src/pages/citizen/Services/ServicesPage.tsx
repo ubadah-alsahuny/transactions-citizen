@@ -1,13 +1,14 @@
-import {PageContainer} from "@/layouts/PageContainer.tsx";
-import {Section} from "@/layouts/Section.tsx";
+import { PageContainer } from "@/layouts/PageContainer.tsx";
+import { Section } from "@/layouts/Section.tsx";
 import OrganizationCard from "@/components/ui/organization-card/OrganizationCard.tsx";
-import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {apiRequest} from "@/data/api/api.ts";
-import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { apiRequest } from "@/data/api/api.ts";
+import { LoadingCircle } from "@/components/ui/loading-circle/LoadingCircle.tsx";
+import cardStyles from '@/styles/ui/organization-card/organizationcard.module.css';
 
 export default function ServicesPage() {
-    interface institution {
+    interface Institution {
         id: number;
         name: string;
         description: string;
@@ -15,69 +16,64 @@ export default function ServicesPage() {
     }
 
     const navigation = useNavigate();
-
-    const [institutions, setInstitutions] = useState<institution[]>([]);
-
+    const [institutions, setInstitutions] = useState<Institution[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
     useEffect(() => {
-        const handleInstitutions  = async () => {
-
+        const handleInstitutions = async () => {
             setIsLoading(true);
-
             try {
                 const data = await apiRequest('/citizen/institutions');
                 setInstitutions(data.data);
             } catch (e: any) {
                 setError(e.message);
-                console.log(e.message);
-            }
-            finally {
+                setError('حدث خطأ في جلب البيانات، تحقق من وجود الانترنت وعِد المحاولة لاحقاً');
+            } finally {
                 setIsLoading(false);
             }
         }
-
         handleInstitutions();
     }, []);
 
-    if(isLoading) {
-        return (
-            LoadingCircle({color: 'white'})
-        );
+    if (isLoading) {
+        return <div>
+            <LoadingCircle/>;
+        </div>
     }
 
     if (error) {
         return (
             <PageContainer>
-                <h2>
+                <h2 style={{ color: 'var(--color-danger)', marginTop: '2rem' }}>
                     حدث خطأ ما، أعد المحاولة لاحقاً
                 </h2>
-                <p>
-                    {error}
-                </p>
+                <p>{error}</p>
             </PageContainer>
         )
     }
 
     return (
         <PageContainer>
-            {/*<Input label={"ابحث عن معاملة"} icon={<FaSearch/>} ></Input>*/}
-                {institutions.length != 0 ?
-                    <Section title={"الدوائر الحكومية"}>
-                        <ul style={{listStyle: 'none', display: 'flex', gap: '1rem', width: '100%', flexWrap: 'wrap'}}>
-                            {institutions.map((institution) => (
-                                <li key={institution.id}>
-                                    <OrganizationCard name={institution.name} onClick={() => {navigation(`institution/${institution.id}`);}}></OrganizationCard>
-                                </li>
-                            ))}
-                        </ul>
-                    </Section>
-                    :
-                    <h1>
-                        "لا يوجد دوائر حكومية بعد"
-                    </h1>
-                }
+            {institutions.length !== 0 ? (
+                <Section title={"الدوائر الحكومية"}>
+                    <ul className={cardStyles.servicesGrid}>
+                        {institutions.map((institution) => (
+                            <li key={institution.id}>
+                                <OrganizationCard
+                                    name={institution.name}
+                                    description={institution.description}
+                                    onClick={() => navigation(`institution/${institution.id}`)}
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                </Section>
+            ) : (
+                <h1 style={{ marginTop: '4rem', color: 'var(--color-sub-text)' }}>
+                    لا يوجد دوائر حكومية بعد
+                </h1>
+            )}
         </PageContainer>
     )
 }

@@ -1,38 +1,38 @@
 html.dark-theme {
-    /* Page / base */
-    --color-primary: #1a1f22;
+    /* Rich cinematic near-black charcoal slate */
+    --color-primary: #0a0d0f;
 
     /* =========================
        Navigation
        ========================= */
-    --color-accent: #428177;
+    --color-accent: #336b60;
 
     --color-top-row: #054239;
     --color-stripped-rows: #043832;
     --color-hovered-row: #054239;
-    --color-table-outline: #3d3a3b;
+    --color-table-outline: #262a2c;
 
     /* =========================
-       Text in Table
+       Typography & Architecture
        ========================= */
-    --color-text: #ffffff;
+    --color-text: #f8fafc;            /* Crisp off-white readable text */
     --color-text-on-black: #edebe0;
     --color-top-of-table-text: #ffffff;
     --color-text-button: #ffffff;
 
-    --color-section: #0d1315;
+    --color-section: #12181b;         /* Sleek, deep dark card wrappers */
+    --color-sub-text: #94a3b8;        /* Muted slate text layers */
+    --color-outine: #22292c;          /* High-end subtle component borders */
 
-    --color-action: #28a745;
-    --color-action-hover: #1e7833;
+    --color-action: #10b981;          /* Premium unified emerald action green */
+    --color-action-hover: #34d399;
 
-    --color-outine: #313638;
-
-    --color-table-row: #1a1f22;
+    --color-table-row: #12181b;
 
     --color-logo: 200%;
 
-    --color-danger: #6b1f2a;
-    --color-danger-hover: #4a151e;
+    --color-danger: #dc2626;
+    --color-danger-hover: #b91c1c;
 
-    --color-input: #757575;
+    --color-input: #94a3b8;
 }

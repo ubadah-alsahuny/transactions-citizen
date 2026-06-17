@@ -1,0 +1,146 @@
+.profile_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* --- Profile Hero Header Layout --- */
+.profile_hero {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 2.5rem 1.5rem !important;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--color-action) 8%, transparent), transparent) !important;
+    border-radius: 1.25rem !important;
+    border: 1px solid var(--color-outine) !important;
+    text-align: center !important;
+    width: 100% !important;
+}
+
+/* Selects inner layout div from Card directly to enforce absolute alignment nesting */
+.profile_hero > div[class*="body_container"] {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+}
+
+.avatar_wrapper {
+    background-color: var(--color-section);
+    border: 2px solid var(--color-action);
+    color: var(--color-action);
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.hero_name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 0.5rem !important;
+    text-align: center !important;
+    width: 100%;
+}
+
+.hero_id {
+    font-size: 0.9rem;
+    color: var(--color-sub-text);
+    background-color: var(--color-primary);
+    padding: 0.3rem 1.2rem;
+    border-radius: 2rem;
+    border: 1px solid var(--color-outine);
+    display: inline-block;
+    margin: 0 auto;
+    text-align: center !important;
+}
+
+/* --- Information Dashboard Grid --- */
+.info_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.25rem;
+    width: 100%;
+    direction: rtl;
+}
+
+.info_card {
+    background-color: var(--color-section) !important;
+    border: 1px solid var(--color-outine) !important;
+    border-radius: 1rem !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    width: 100% !important;
+    transition: transform 0.22s ease, border-color 0.22s ease !important;
+}
+
+.info_card:hover {
+    transform: translateY(-2px) !important;
+    border-color: var(--color-action) !important;
+}
+
+.info_card_inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.icon_box {
+    background-color: color-mix(in srgb, var(--color-action) 12%, transparent);
+    color: var(--color-action);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.card_content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex-grow: 1;
+    min-width: 0; /* Necessary constraint layer for absolute flex text wrap handling */
+}
+
+.card_label {
+    font-size: 0.85rem;
+    color: var(--color-sub-text);
+    text-align: right !important;
+}
+
+.card_value {
+    font-size: clamp(0.9rem, 2.5vw, 1.05rem); /* Dynamically scales fluid typography down */
+    font-weight: 600;
+    color: var(--color-text);
+    text-align: right !important;
+    white-space: normal;
+    word-break: break-all; /* Completely safely splits long string values down to lines */
+    overflow-wrap: break-word;
+}
+
+/* --- Responsive Viewports --- */
+@media screen and (max-width: 640px) {
+    .info_grid {
+        grid-template-columns: 1fr;
+    }
+    .info_card_inner {
+        padding: 1rem;
+    }
+}

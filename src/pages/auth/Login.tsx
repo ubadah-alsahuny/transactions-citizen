@@ -6,69 +6,86 @@ import {Button} from "@/components/ui/button/Button.tsx";
 import {FaPaperPlane} from "react-icons/fa";
 import {PageContainer} from "@/layouts/PageContainer.tsx";
 import {MdAlternateEmail} from "react-icons/md";
-import {ErrorMessage} from "@/components/ui/error-message/ErrorMessage.tsx";
 import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 import {useForm} from "@/data/utils/useForm.ts";
 import {useAuth} from "@/data/auth/auth.ts";
+
+import styles from '@/styles/pages/auth/login.module.css';
 
 export default function Login() {
     const { formData, updateField } = useForm({
         nationalId: '', email: '', password: '',
     });
 
-    const { login, error, isLoading } = useAuth();
+    const { login, isLoading } = useAuth();
 
-    return <PageContainer>
-        <div style={{width: '100%', height: '100vh', placeContent: "center"}}>
-            {error != '' ? <ErrorMessage children={error}></ErrorMessage> : null}
+    return (
+        <PageContainer>
+            <div className={styles.login_page_wrapper}>
+                <ElementsContainer>
+                    <h1 className={styles.form_title}>
+                        سجل دخول
+                    </h1>
 
-            <ElementsContainer>
-                <h1>
-                    سجل دخول
-                </h1>
-                <form onSubmit={(e) => { e.preventDefault(); login(formData); }}
-                      style={{width: '100%', placeContent: 'center', placeItems: 'center', placeSelf: 'center'}}>
-                    <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
-                        <Input onChange={updateField('nationalId')}
-                               label={"الرقم الوطني"} type={'text'}
-                               value={formData.nationalId}
-                               icon={<IoMdCard size={22}/>} required={true}></Input>
+                    <form
+                        onSubmit={(e) => { e.preventDefault(); login(formData); }}
+                        className={styles.form_layout}
+                    >
+                        <div className={styles.inputs_stack}>
+                            <Input
+                                onChange={updateField('nationalId')}
+                                label={"الرقم الوطني"}
+                                type={'text'}
+                                value={formData.nationalId}
+                                icon={<IoMdCard size={20}/>}
+                                required={true}
+                            />
 
-                        <Input onChange={updateField('email')}
-                               label={"البريد الالكتروني"} type={'email'}
-                               value={formData.email}
-                               icon={<MdAlternateEmail size={22}/>} required={true}></Input>
+                            <Input
+                                onChange={updateField('email')}
+                                label={"البريد الالكتروني"}
+                                type={'email'}
+                                value={formData.email}
+                                icon={<MdAlternateEmail size={20}/>}
+                                required={true}
+                            />
 
-                        <Input onChange={updateField('password')}
-                               label={"كلمة المرور"} type={'password'}
-                               value={formData.password}
-                               icon={<Si1Password size={20}/>}
-                               required={true}></Input>
-                    </div>
+                            <Input
+                                onChange={updateField('password')}
+                                label={"كلمة المرور"}
+                                type={'password'}
+                                value={formData.password}
+                                icon={<Si1Password size={18}/>}
+                                required={true}
+                            />
+                        </div>
 
-                    <Button type={'submit'} variant={'submit'}>
-                        {isLoading ?
-                            <LoadingCircle color={'var(--color-primary)'}></LoadingCircle>
-                            :
-                            <div>
-                                <FaPaperPlane size={17}/>
-                                &nbsp;
-                                سجل دخول
-                            </div>
-                        }
-                    </Button>
-                </form>
-            </ElementsContainer>
+                        <Button
+                            type={'submit'}
+                            variant={'submit'}
+                            className={styles.submit_button}
+                        >
+                            {isLoading ? (
+                                <LoadingCircle/>
+                            ) : (
+                                <div className={styles.button_inner_content}>
+                                    <FaPaperPlane size={14}/>
+                                    <span>سجل دخول</span>
+                                </div>
+                            )}
+                        </Button>
+                    </form>
+                </ElementsContainer>
 
-            <div style={{marginTop: '1rem'}}>
-                <p>
-                    إن كنتَ لا تملك حساباً، فـ
-                    &nbsp;
-                    <a href={'/register'} style={{appearance: 'none', color: 'var(--color-sub-text)'}}>
-                        أنشأ حساباً جديداً
-                    </a>
-                </p>
+                {/*<div className={styles.register_link_container}>*/}
+                {/*    <p>*/}
+                {/*        إن كنتَ لا تملك حساباً، فـ{' '}*/}
+                {/*        <a href={'/register'} className={styles.register_anchor}>*/}
+                {/*            أنشأ حساباً جديداً*/}
+                {/*        </a>*/}
+                {/*    </p>*/}
+                {/*</div>*/}
             </div>
-        </div>
-    </PageContainer>
+        </PageContainer>
+    );
 }

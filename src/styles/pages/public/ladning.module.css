@@ -1,0 +1,205 @@
+/* ==========================================================================
+   Landing Page Layout Architecture (Modern 2026 Grid Blueprint)
+   ========================================================================== */
+
+.landing_wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 4.5rem;
+    direction: rtl; /* Ensures natural RTL flow for Arabic interfaces */
+    padding: 1.5rem 0 3rem 0;
+}
+
+/* --- Hero Section Layout --- */
+.hero_section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem;
+    min-height: 55vh;
+}
+
+.hero_content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 620px;
+}
+
+.hero_title {
+    font-size: clamp(2rem, 3.5vw, 2.85rem);
+    font-weight: 800;
+    line-height: 1.35;
+    color: var(--color-text);
+}
+
+.hero_subtitle {
+    font-size: clamp(0.95rem, 1.25vw, 1.15rem);
+    color: var(--color-sub-text);
+    line-height: 1.75;
+}
+
+.hero_actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.btn_primary {
+    background-color: var(--color-action);
+    color: var(--color-text-button);
+    padding: 0.8rem 1.85rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn_primary:hover {
+    background-color: var(--color-action-hover);
+}
+
+.btn_secondary {
+    background-color: transparent !important;
+    color: var(--color-action) !important;
+    padding: 0.8rem 1.85rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    border: 1px solid var(--color-outine) !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn_secondary:hover {
+    background-color: color-mix(in srgb, var(--color-action) 8%, transparent) !important;
+    border-color: var(--color-action) !important;
+}
+
+.hero_graphic_container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styled structural placeholder mimicking visual container in design blueprint */
+.hero_graphic_fallback {
+    width: 100%;
+    max-width: 480px;
+    height: 340px;
+    border-radius: 1.25rem;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--color-action) 12%, transparent), transparent);
+    border: 1px solid var(--color-outine);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero_graphic_fallback::before {
+    content: '';
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--color-action) 8%, transparent) 0%, transparent 65%);
+}
+
+/* --- Bento Services Grid Section --- */
+.services_section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.section_title {
+    font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.services_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+}
+
+/* Structural internal formatting wrapper for Card children contents */
+.service_card_inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: right;
+    width: 100%;
+}
+
+.service_icon_box {
+    width: 3.2rem;
+    height: 3.2rem;
+    background-color: color-mix(in srgb, var(--color-action) 10%, transparent);
+    color: var(--color-action);
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+}
+
+.service_title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.service_desc {
+    font-size: 0.9rem;
+    color: var(--color-sub-text);
+    line-height: 1.65;
+    margin: 0;
+}
+
+/* ==========================================================================
+   Adaptive Breakpoints
+   ========================================================================== */
+@media screen and (max-width: 968px) {
+    .hero_section {
+        flex-direction: column-reverse;
+        text-align: center;
+        gap: 2.5rem;
+    }
+
+    .hero_content {
+        align-items: center;
+        max-width: 100%;
+    }
+
+    .hero_actions {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .service_icon_box {
+        align-self: center;
+    }
+
+    .service_card_inner {
+        align-items: center;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .hero_actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn_primary, .btn_secondary {
+        width: 100%;
+    }
+}

@@ -12,6 +12,7 @@ export function mapStatus(status: string | boolean | null | undefined): string {
 
     switch (status.toString().toLowerCase().trim()) {
         case 'pending':
+        case 'in_progress':
             return 'في حالة انتظار';
         case 'approved':
         case 'completed':

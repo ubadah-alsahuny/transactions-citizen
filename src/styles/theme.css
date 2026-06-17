@@ -1,37 +1,37 @@
-:root{
-    --color-primary: #f9fafb;
+:root {
+    /* Sophisticated, low-glare matte slate-mint base (replaces blinding white) */
+    --color-primary: #e3e9e6;
 
-/* =========================
-   Navigation - light theme colors
-   ========================= */
-    --color-accent: #054239;
+    /* =========================
+       Navigation - light theme colors
+       ========================= */
+    --color-accent: #0b3c32;
 
     --color-top-row: #988561;
     --color-stripped-rows: #E0DCCE;
-    --color-hovered-row: 	#b9a779;
+    --color-hovered-row: #b9a779;
     --color-table-outline: #3d3a3b;
 
-/* =========================
-   Text in Table - light theme colors
-   ========================= */
-    --color-text: #171717;
+    /* =========================
+       Typography & Sections
+       ========================= */
+    --color-text: #0f1a16;            /* Deep forest-charcoal for crisp, readable text */
     --color-text-on-black: #b9a779;
     --color-top-of-table-text: #edebe0;
-    --color-text-button: #fff;
+    --color-text-button: #ffffff;
 
-    --color-section: #fefefe;
+    --color-section: #f4f7f6;         /* Soft linen-white for cards to float gently on the background */
+    --color-sub-text: #4d5f57;        /* Muted sage-charcoal for readable descriptions */
+    --color-outine: #cbd9d4;          /* Soft, premium component boundaries */
 
-    --color-action: #28a745;
-    --color-action-hover: #1e7833;
-
-    --color-sub-text: #9da9af;
-
-    --color-outine: #e5e5e5;
+    /* Premium high-end unified action tones */
+    --color-action: #059669;          /* Rich, deep emerald green */
+    --color-action-hover: #047857;
 
     --color-logo: 25%;
 
-    --color-danger: #6b1f2a;
-    --color-danger-hover: #4a151e;
+    --color-danger: #b91c1c;
+    --color-danger-hover: #991b1b;
 
-    --color-input: #757575;
+    --color-input: #4d5f57;
 }

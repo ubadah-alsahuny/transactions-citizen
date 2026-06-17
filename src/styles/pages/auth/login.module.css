@@ -1,0 +1,109 @@
+/* ==========================================================================
+   Full Window Context Canvas (Fixes Outer Edge Padding Bugs)
+   ========================================================================== */
+.login_page_wrapper {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    direction: rtl;
+    overflow-y: auto;
+
+    /* Light Theme Backdrop: Ultra-smooth silk sage wash (Zero blinding reflection) */
+    background: linear-gradient(135deg, #e4eae7 0%, #cbdad4 50%, #dbe4e0 100%);
+    transition: background 0.4s ease;
+}
+
+/* Dark Theme Overrides applied seamlessly */
+:global(html.dark-theme) .login_page_wrapper {
+    /* Dark Theme Backdrop: Cinematic premium ambient emerald depth */
+    background: linear-gradient(135deg, #0a0d0f 0%, #0c1815 50%, #0a0d0f 100%);
+}
+
+/* ==========================================================================
+   Inner Component Layout Architectures
+   ========================================================================== */
+
+.form_title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+}
+
+.form_layout {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.inputs_stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+    margin-bottom: 1.75rem;
+}
+
+/* Custom Overrides to shatter index.css global button rule limitations */
+.submit_button {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0.85rem 1.5rem !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    border-radius: 0.75rem !important;
+    justify-content: center !important;
+    background-color: var(--color-action) !important;
+    color: var(--color-text-button) !important;
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.15) !important;
+    transition: all 0.2s ease-in-out !important;
+    border: none !important;
+}
+
+.submit_button:hover {
+    background-color: var(--color-action-hover) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 20px rgba(5, 150, 105, 0.25) !important;
+}
+
+:global(html.dark-theme) .submit_button {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+.button_inner_content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Bottom Registration Redirection Unit */
+.register_link_container {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.register_link_container p {
+    font-size: 0.95rem;
+    color: var(--color-sub-text);
+}
+
+.register_anchor {
+    color: var(--color-action);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.register_anchor:hover {
+    color: var(--color-action-hover);
+    text-decoration: underline;
+}

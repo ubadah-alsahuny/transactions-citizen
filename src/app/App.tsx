@@ -1,8 +1,12 @@
 import { RouterProvider } from 'react-router-dom'
 import { router } from './router'
+import {ToastContainer} from "react-toastify";
 
 export default function App() {
     return (
-        <RouterProvider router={router} />
+        <div>
+            <RouterProvider router={router} />
+            <ToastContainer />
+        </div>
     )
 }

@@ -6,10 +6,11 @@ import {apiRequest} from "@/data/api/api.ts";
 import {useEffect, useRef, useState} from "react";
 import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 import {MdAlternateEmail, MdDateRange, MdPerson} from "react-icons/md";
-import {IoMdCard} from "react-icons/io";
 import {BiCake} from "react-icons/bi";
 import {IoWoman} from "react-icons/io5";
 import {formatDate, formatDateAndTime} from "@/data/utils/formatDateAndTime.ts";
+
+import styles from '@/styles/pages/citizen/Account/account.module.css';
 
 export default function AccountPage() {
     const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +57,7 @@ export default function AccountPage() {
 
     if (isLoading) {
         return (
-            <LoadingCircle color={'var(--color-text)'}></LoadingCircle>
+            <LoadingCircle></LoadingCircle>
         )
     }
 
@@ -71,100 +72,79 @@ export default function AccountPage() {
     return(
         <PageContainer>
             <Section title={"حسابك الشخصي"} id={"personal-account"}>
-                <div style={{placeItems: "center", display: "flex", flexDirection: "row", gap: "3rem", flexWrap: 'wrap'}}>
-                    <Card
-                        type="vertical"
-                        height={"100%"}
-                        variant={'user'}
-                        children={
-                            <>
-                                <div style={{width: '100%', display: 'flex', flexDirection: 'column', placeItems: 'center'}}>
-                                    <MdPerson size={40} color={'var(--color-action)'}/>
-                                    <h3>المواطن</h3>
-                                </div>
-                                <h4>{citizenName}</h4>
-                                {/*<p style={{fontSize: "0.7rem"}}>صورة بخلفية بيضاء معتمدة لصاحب الحساب</p>*/}
-                            </>
-                        }
-                        /*buttonIcon={<FaUserEdit/>} buttonLabel={<p>تغيير الصورة الشخصية</p>}*/
-                    />
+                <div className={styles.profile_wrapper}>
 
+                    {/* Centered Profile Hero Section Container */}
                     <Card
                         type="vertical"
-                        height={"100%"}
-                        variant={'user'}
-                        children={
-                            <>
-                                <div style={{width: '100%', display: 'flex', flexDirection: 'column', placeItems: 'center'}}>
-                                    <IoMdCard size={30} color={'var(--color-action)'}/>
-                                    <h3>الرقم الوطني</h3>
-                                </div>
-                                <h4>{citizenNationalId}</h4>
-                            </>
-                        }
-                    />
+                        height={"auto"}
+                        className={styles.profile_hero}
+                    >
+                        <div className={styles.avatar_wrapper}>
+                            <MdPerson size={45} />
+                        </div>
+                        <h3 className={styles.hero_name}>{citizenName}</h3>
+                        <div className={styles.hero_id}>
+                            الرقم الوطني: {citizenNationalId}
+                        </div>
+                    </Card>
 
-                    <Card
-                        type="vertical"
-                        height={"100%"}
-                        variant={'user'}
-                        children={
-                            <>
-                                <div style={{width: '100%', display: 'flex', flexDirection: 'column', placeItems: 'center'}}>
-                                    <BiCake size={30} color={'var(--color-action)'}/>
-                                    <h3>تاريخ الميلاد</h3>
-                                </div>
-                                <h4>{citizenDateOfBirth}</h4>
-                            </>
-                        }
-                    />
+                    {/* Clean 2026 Grid Module Wrapper */}
+                    <div className={styles.info_grid}>
 
-                    <Card
-                        type="vertical"
-                        height={"100%"}
-                        variant={'user'}
-                        children={
-                            <>
-                                <div style={{width: '100%', display: 'flex', flexDirection: 'column', placeItems: 'center'}}>
-                                    <IoWoman size={40} color={'var(--color-action)'}/>
-                                    <h3>اسم الأم</h3>
+                        {/* اسم الأم */}
+                        <Card type="horizontal" height={"auto"} className={styles.info_card}>
+                            <div className={styles.info_card_inner}>
+                                <div className={styles.icon_box}>
+                                    <IoWoman size={24} />
                                 </div>
-                                <h4>{citizenMotherName}</h4>
-                                {/*<p style={{fontSize: "0.7rem"}}>صورة بخلفية بيضاء معتمدة لصاحب الحساب</p>*/}
-                            </>
-                        }
-                    />
+                                <div className={styles.card_content}>
+                                    <span className={styles.card_label}>اسم الأم</span>
+                                    <h4 className={styles.card_value}>{citizenMotherName}</h4>
+                                </div>
+                            </div>
+                        </Card>
 
-                    <Card
-                        type="vertical"
-                        height={"100%"}
-                        variant={'user'}
-                        children={
-                            <>
-                                <div style={{width: '100%', display: 'flex', flexDirection: 'column', placeItems: 'center'}}>
-                                    <MdAlternateEmail size={40} color={'var(--color-action)'}/>
-                                    <h3>البريد الإلكتروني</h3>
+                        {/* تاريخ الميلاد */}
+                        <Card type="horizontal" height={"auto"} className={styles.info_card}>
+                            <div className={styles.info_card_inner}>
+                                <div className={styles.icon_box}>
+                                    <BiCake size={24} />
                                 </div>
-                                <h4>{citizenEmail}</h4>
-                                {/*<p style={{fontSize: "0.7rem"}}>صورة بخلفية بيضاء معتمدة لصاحب الحساب</p>*/}
-                            </>
-                        }
-                    />
+                                <div className={styles.card_content}>
+                                    <span className={styles.card_label}>تاريخ الميلاد</span>
+                                    <h4 className={styles.card_value}>{citizenDateOfBirth}</h4>
+                                </div>
+                            </div>
+                        </Card>
 
-                    <Card
-                        type="vertical"
-                        height={"100%"}
-                        variant={'user'}
-                        children={
-                            <>
-                                <div style={{width: '100%', display: 'flex', flexDirection: 'column', placeItems: 'center'}}>
-                                    <MdDateRange size={35} color={'var(--color-action)'}/>
-                                    <h3>تاريخ إنشاء الحساب</h3>
+                        {/* البريد الإلكتروني (Includes anti-overflow constraints) */}
+                        <Card type="horizontal" height={"auto"} className={styles.info_card}>
+                            <div className={styles.info_card_inner}>
+                                <div className={styles.icon_box}>
+                                    <MdAlternateEmail size={24} />
                                 </div>
-                                <h4>{citizenAccountCreationDate}</h4>
-                            </>
-                        }
-                    />
+                                <div className={styles.card_content}>
+                                    <span className={styles.card_label}>البريد الإلكتروني</span>
+                                    <h4 className={styles.card_value}>{citizenEmail}</h4>
+                                </div>
+                            </div>
+                        </Card>
+
+                        {/* تاريخ إنشاء الحساب */}
+                        <Card type="horizontal" height={"auto"} className={styles.info_card}>
+                            <div className={styles.info_card_inner}>
+                                <div className={styles.icon_box}>
+                                    <MdDateRange size={24} />
+                                </div>
+                                <div className={styles.card_content}>
+                                    <span className={styles.card_label}>تاريخ إنشاء الحساب</span>
+                                    <h4 className={styles.card_value}>{citizenAccountCreationDate}</h4>
+                                </div>
+                            </div>
+                        </Card>
+
+                    </div>
                 </div>
             </Section>
         </PageContainer>

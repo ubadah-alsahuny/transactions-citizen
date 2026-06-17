@@ -28,7 +28,7 @@ html{
 }
 
 body {
-  margin: 0;
+  margin: 0 auto;
   font-family: var(--font-main), sans-serif;
   background-color: var(--color-primary);
 }
@@ -62,6 +62,8 @@ ul {
   list-style: none;
 }
 
+
+
 /* =========================
    Buttons (UI system hook)
    ========================= */
@@ -76,8 +78,7 @@ button {
   gap: 0.5rem;
   
   place-items: center;
-  border-radius: 2rem;
-  corner-shape: squircle;
+  border-radius: 0.5rem;
 }
 
 button[data-variant="primary"] {
@@ -166,11 +167,14 @@ button[data-variant="header"]:hover::after {
 /* =========================
    Inputs
    ========================= */
-input, select {
-  padding: 0.5rem;
-  /*border: 1px solid var(--border-default);*/
-  /*background-color: var(--bg-surface);*/
-  /*color: var(--text-primary);*/
+
+img, video, canvas, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+input, textarea, select {
+  max-width: 100%;
 }
 
 /* =========================

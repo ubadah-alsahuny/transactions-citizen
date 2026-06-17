@@ -51,7 +51,7 @@ export function useAuth () {
             localStorage.setItem('citizenToken', data.data.token);
             navigate('/citizen/dashboard');
         } catch (error: any) {
-            setError(error.message)
+            setError('بيانات خاطئة (تحقق من صحة المعلومات)')
             console.log(error.message || 'حدث خطأ أثناء عملية تسجيل الدخول، حاول مرة أخرى')
         } finally {
             setIsLoading(false);

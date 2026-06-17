@@ -20,22 +20,18 @@ export default function Input({
                                   required = false,
                               }: InputProps) {
     return (
-        <div className={styles.input_container}>
-            <div className={styles.input_icon_container}>
-                {icon && <span className={styles.icon_settings}>{icon}</span>}
-                <input
-                    type={type}
-                    placeholder=""
-                    value={value}
-                    required={required}
-                    autoComplete='off'
-                    autoCapitalize='off'
-                    onChange={(e) => onChange(e.target.value)}
-
-                    className={styles.input_field_settings}
-                />
-                {label && <div className={styles.label_settings}>{label}</div>}
-            </div>
+        <div className={styles.input_wrapper}>
+            {icon && <span className={styles.icon_settings}>{icon}</span>}
+            <input
+                type={type}
+                placeholder={label}
+                value={value}
+                required={required}
+                autoComplete='off'
+                autoCapitalize='off'
+                onChange={(e) => onChange(e.target.value)}
+                className={styles.input_field_settings}
+            />
         </div>
     )
 }

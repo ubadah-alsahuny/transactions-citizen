@@ -10,6 +10,7 @@ import {LoadingCircle} from "@/components/ui/loading-circle/LoadingCircle.tsx";
 import {mapStatus} from "@/data/utils/mapStatus.ts";
 import {formatDate, formatTime} from "@/data/utils/formatDateAndTime.ts";
 import {useNavigate} from "react-router-dom";
+import StatusBadge from "@/components/ui/status-badge/StatusBadge.tsx";
 
 export default function DashboardPage() {
     const navigate = useNavigate();
@@ -59,7 +60,7 @@ export default function DashboardPage() {
 
                 {isLoading ?
                     <div>
-                        <LoadingCircle color={'white'}/>
+                        <LoadingCircle/>
                     </div>
                     :
                     <Table headers={overviewHeaders}
@@ -80,7 +81,7 @@ export default function DashboardPage() {
 
                 {isLoading ? (
                         <div>
-                        <LoadingCircle color={'white'}/>
+                        <LoadingCircle/>
                     </div>
                 ) :
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -91,7 +92,7 @@ export default function DashboardPage() {
                                        <td>{item.transactionName}</td>
                                        <td>{formatDate(item.createdAt)}</td>
                                        <td>{formatTime(item.createdAt)}</td>
-                                       <td>{mapStatus(item.status)}</td>
+                                       <td><StatusBadge status={mapStatus(item.status)}></StatusBadge></td>
                                    </>
                                )}>
                         </Table>
@@ -99,7 +100,7 @@ export default function DashboardPage() {
                         <Button
                             variant={'primary'}
                             onClick={() => {navigate('/citizen/documents');}}>
-                            رؤية كافة معاملاتك
+                            رؤية معاملاتي
                         </Button>
                     </div>
                 }

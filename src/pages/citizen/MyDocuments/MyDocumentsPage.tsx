@@ -18,7 +18,7 @@ export default function MyDocumentsPage() {
     if (isLoading) {
         return (
             <div>
-                <LoadingCircle color={'white'}></LoadingCircle>
+                <LoadingCircle></LoadingCircle>
             </div>
         )
     }
@@ -41,7 +41,15 @@ export default function MyDocumentsPage() {
             </div>
             :
             <Section title={'معاملاتي'}>
-                <ul style={{width: '100%', gap: '1rem', display: 'flex', flexDirection: 'column'}}>
+                <ul style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1rem',
+                    width: '100%',
+                    padding: 0,
+                    margin: 0,
+                    listStyle: 'none'
+                }}>
                     {myDocuments.map((d) => (
                         <li>
                             <TransactionCard name={d.transactionName} description={d.institutionName} status={mapStatus(d.status)}

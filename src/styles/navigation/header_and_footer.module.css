@@ -1,126 +1,132 @@
-/* =========================
-   Header CSS
-========================= */
-
-.header_settings{
+/* ==========================================================================
+   Header Glass Architecture
+   ========================================================================== */
+.header_settings {
     width: 100%;
-    height: fit-content;
     position: sticky;
     top: 0;
     z-index: 999;
-
-    /* 2. The core blur effect on the background behind the element */
-    backdrop-filter: blur(8px) saturate(180%);
-    -webkit-backdrop-filter: blur(8px) saturate(180%);
-
+    background-color: color-mix(in srgb, var(--color-section) 80%, transparent);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
     border-bottom: 1px solid var(--color-outine);
+    transition: all 0.3s ease;
 }
 
-.header_items_container{
-    display: flex !important;
-    margin: 0;
-    gap: 1rem !important;
-    place-items: center;
-}
-
-.navigation_header_buttons{
+.header_items_container {
     display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0.75rem 2rem;
+    align-items: center;
+    justify-content: space-between;
+    direction: rtl;
+}
+
+.syrian_logo {
+    width: 3.5rem;
+    height: 3.5rem;
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(283deg) brightness(var(--color-logo)) contrast(103%);
+    transition: transform 0.2s ease;
+}
+
+.syrian_logo:hover {
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   Navigation Links
+   ========================================================================== */
+.navigation_header_buttons {
+    display: flex;
+    align-items: center;
     gap: 0.5rem;
-    width: 45%;
+}
+
+/* Base override for header menu buttons */
+.navigation_header_buttons button {
+    font-weight: 500 !important;
+    font-size: 0.95rem !important;
+    border-radius: 0.5rem !important;
+    padding: 0.5rem 1rem !important;
+    color: var(--color-text) !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.navigation_header_buttons button:hover {
+    background-color: color-mix(in srgb, var(--color-action) 10%, transparent) !important;
+    color: var(--color-action) !important;
+}
+
+/* ==========================================================================
+   Left Profile Panel Icons
+   ========================================================================== */
+.left_panel {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
 }
 
 .header_icons {
     color: var(--color-text);
-
-    border-radius: 2rem;
-    corner-shape: squircle;
-
-    transition: all 0.2s ease-in-out;
-}
-
-.header_icons:hover{
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.header_icons:hover {
     background-color: var(--color-outine);
-    border-radius: 2rem;
-    corner-shape: squircle;
+    color: var(--color-action);
 }
 
-.left_panel{
-    display: flex !important;
-    gap: 1.5rem !important;
-    padding: 0.5rem 0.75rem;
-    margin-right: auto;
-    margin-left: 1rem;
-    place-items: center;
-    border-radius: 2rem;
-    corner-shape: squircle;
-    background-color: var(--color-section);
-}
-
-.syrian_logo{
-    width: 4rem;
-    height: 4rem;
-    margin-right: 1rem;
-    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(283deg) brightness(var(--color-logo)) contrast(103%);
-
-    transition: all 0.2s ease-in-out;
-}
-
-.syrian_logo:hover{
-    transform: scale(1.05);
-}
-
-.toggle_settings{
+.toggle_settings {
     display: none;
 }
 
-/* =========================
-   Footer CSS
-========================= */
-
-.footer_settings{
-    display: grid;
-    place-items: center;
-
-    width: 100%;
-
-    padding: 1.7rem;
-
-    background-color: var(--color-section);
-    border-top: 1px solid var(--color-outine);
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+@media screen and (max-width: 960px) {
+    .header_items_container {
+        padding: 0.75rem 1rem;
+    }
+    .navigation_header_buttons {
+        display: none; /* Safely conceals desktop navigation on smaller screens */
+    }
+    .toggle_settings {
+        display: block;
+    }
 }
 
-.footer_settings h4, .footer_settings h5{
+/* ==========================================================================
+   Footer Component Structural System
+   ========================================================================== */
+.footer_settings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 2rem 1rem;
+    background-color: var(--color-section);
+    border-top: 1px solid var(--color-outine);
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.footer_settings h4 {
+    font-size: 1rem;
+    font-weight: 600;
     color: var(--color-text);
 }
 
-@media screen and (max-width: 600px){
-    .navigation_header_buttons{
-        display: none;
-    }
-    .toggle_settings{
-        display: none;
-    }
+.footer_settings h5 {
+    font-size: 0.85rem;
+    color: var(--color-sub-text);
 }
-
-@media screen and (max-width: 750px){
-    .theme_icons{
-        display: none;
-    }
-    .toggle_settings{
-        display: none;
-    }
-}
-
-@media screen and (max-width: 680px){
-    .header_buttons{
-        display: none;
-    }
-    .toggle_settings{
-        display: revert;
-    }
-    .syrian_logo{
-        margin-right: 0;
-    }
-}
-

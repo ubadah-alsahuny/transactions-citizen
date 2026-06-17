@@ -1,0 +1,189 @@
+.page_wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* --- Timeline Progress Track Architecture --- */
+.timeline_wrapper {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 3rem 0;
+    direction: rtl;
+}
+
+.timeline_line_bg {
+    position: absolute;
+    top: 1rem; /* Centers vertically with the 2rem/32px node circles */
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: var(--color-outine);
+    z-index: 1;
+    border-radius: 2px;
+}
+
+.timeline_line_fill {
+    position: absolute;
+    top: 1rem;
+    right: 0; /* Fills correctly from right to left for RTL */
+    height: 4px;
+    background-color: var(--color-action);
+    z-index: 2;
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Individual Step Nodes --- */
+.step_node {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 3;
+    flex-1: 1;
+}
+
+.circle_indicator {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    background-color: var(--color-primary);
+    border: 3px solid var(--color-outine);
+    color: var(--color-sub-text);
+    transition: all 0.3s ease;
+}
+
+.step_node[data-state="completed"] .circle_indicator {
+    background-color: var(--color-action);
+    border-color: var(--color-action);
+    color: #ffffff;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-action) 20%, transparent);
+}
+
+.step_node[data-state="active"] .circle_indicator {
+    background-color: var(--color-section);
+    border-color: var(--color-action);
+    color: var(--color-action);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-action) 15%, transparent);
+}
+
+.step_node[data-state="rejected"] .circle_indicator {
+    background-color: var(--color-danger);
+    border-color: var(--color-danger);
+    color: #ffffff;
+}
+
+.step_title {
+    margin-top: 0.75rem !important;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-sub-text);
+    white-space: nowrap;
+    text-align: center;
+    justify-self: center;
+}
+
+.step_node[data-state="completed"] .step_title,
+.step_node[data-state="active"] .step_title {
+    color: var(--color-text);
+}
+
+.step_node[data-state="rejected"] .step_title {
+    color: var(--color-danger);
+}
+
+/* --- Metadata Summary Dashboard Card --- */
+.meta_dashboard {
+    background-color: var(--color-section);
+    border: 1px solid var(--color-outine);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 600px;
+    margin: 2rem auto 0 auto;
+    direction: rtl;
+    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.01);
+}
+
+.meta_title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-outine);
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.25rem;
+    text-align: right !important; /* Overrides global index.css centering rules */
+    justify-self: start !important;
+}
+
+.meta_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+}
+
+.meta_label {
+    font-size: 0.95rem;
+    color: var(--color-sub-text);
+    text-align: right !important;
+}
+
+.meta_value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text);
+    text-align: left !important;
+}
+
+/* --- Responsive Adaptations --- */
+@media screen and (max-width: 680px) {
+    .timeline_wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.75rem;
+        padding-right: 1.5rem;
+        margin: 1.5rem 0;
+    }
+
+    .timeline_line_bg {
+        top: 0;
+        bottom: 0;
+        right: 2.25rem;
+        left: auto;
+        width: 4px;
+        height: 100%;
+    }
+
+    .timeline_line_fill {
+        top: 0;
+        right: 2.25rem;
+        left: auto;
+        width: 4px;
+        transition: height 0.4s ease;
+    }
+
+    .step_node {
+        flex-direction: row-reverse;
+        gap: 1.25rem;
+        align-items: center;
+    }
+
+    .step_title {
+        margin-top: 0 !important;
+        text-align: right !important;
+    }
+}

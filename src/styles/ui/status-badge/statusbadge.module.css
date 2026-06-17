@@ -1,9 +1,35 @@
-.badge_container{
-    display: flex;
-    padding: 0 1rem;
+/* statusbadge.module.css */
+.badge_container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 0.85rem;
     border-radius: 2rem;
-    corner-shape: squircle;
-    place-items: center;
-    color: var(--color-text);
-    background-color: var(--color-primary);
+    font-size: 0.825rem;
+    font-weight: 700;
+    white-space: nowrap;
+    direction: rtl;
+}
+
+/* Dynamic State Color Tints matched safely across Light & Dark themes */
+.badge_container[data-status="مقبول"],
+.badge_container[data-status="مُفعّل"] {
+    background-color: color-mix(in srgb, var(--color-action) 12%, transparent);
+    color: var(--color-action);
+}
+
+.badge_container[data-status="في حالة انتظار"] {
+    background-color: rgba(218, 165, 32, 0.12);
+    color: #bfa15f;
+}
+
+.badge_container[data-status="مرفوض"],
+.badge_container[data-status="غير مُفعّل"] {
+    background-color: color-mix(in srgb, var(--color-danger) 12%, transparent);
+    color: var(--color-danger);
+}
+
+.badge_container[data-status="لا يوجد حالة"] {
+    background-color: color-mix(in srgb, var(--color-sub-text) 15%, transparent);
+    color: var(--color-sub-text);
 }
