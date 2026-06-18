@@ -1,0 +1,72 @@
+/* ==========================================================================
+   Checkbox — reusable boolean toggle component
+   ========================================================================== */
+
+.checkbox_wrapper {
+    display: flex;
+    flex-direction: row-reverse;        /* RTL: label on right, box on left */
+    align-items: center;
+    gap: 0.75rem;
+    direction: rtl;
+    cursor: pointer;
+    width: 100%;
+}
+
+.hidden_input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.custom_box {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    border-radius: 0.4rem;
+    border: 2px solid var(--color-sub-text);
+    background-color: rgba(255, 255, 255, 0.03);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.custom_box.checked {
+    background-color: var(--color-action);
+    border-color: var(--color-action);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-action) 15%, transparent);
+}
+
+.checkmark {
+    display: none;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.custom_box.checked .checkmark {
+    display: block;
+}
+
+.label_text {
+    font-size: 0.95rem;
+    color: var(--color-text);
+    font-family: var(--font-main), sans-serif;
+    user-select: none;
+}
+
+.required_star {
+    color: var(--color-danger);
+    margin-right: 0.2rem;
+}
+
+.error_text {
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--color-danger);
+    direction: rtl;
+    text-align: right;
+}

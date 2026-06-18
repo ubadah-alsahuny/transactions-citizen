@@ -4,25 +4,16 @@ import { useEffect, useState } from "react";
 import { apiRequest } from "@/data/api/api.ts";
 import { useLocation } from "react-router-dom";
 import { LoadingCircle } from "@/components/ui/loading-circle/LoadingCircle.tsx";
-import Input from "@/components/ui/input/Input.tsx";
-import { IoMdCard } from "react-icons/io";
-import { Button } from "@/components/ui/button/Button.tsx";
 import StepCard from "@/components/ui/step-card/StepCard.tsx";
-import { mapInputType } from "@/data/utils/mapInputType.ts";
+import DynamicFormBuilder from "@/components/ui/dynamic-form/DynamicFormBuilder.tsx";
+import type { RequiredInitialData } from "@/components/ui/dynamic-form/fieldValidator.ts";
 import styles from '@/styles/pages/citizen/TransactionDetails/transactiondetails.module.css';
-import {MdArrowBackIos} from "react-icons/md";
+import { toast } from "react-toastify";
 
 type TransactionSteps = {
     order: number;
     sectionId: string;
     sectionName: string;
-}
-
-type RequiredInitialData = {
-    id: string;
-    keyName: string;
-    keyType: string;
-    isRequired: boolean;
 }
 
 type TransactionDetails = {
@@ -38,7 +29,6 @@ export default function TransactionDetailsPage() {
     const transactionId = location.pathname.split("/").pop();
 
     const [transactionDetails, setTransactionDetails] = useState<TransactionDetails | null>(null);
-    const [formData, setFormData] = useState<Record<string, string>>({});
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
 
@@ -49,7 +39,7 @@ export default function TransactionDetailsPage() {
                 const data = await apiRequest(`/citizen/transactions/${transactionId}`);
                 setTransactionDetails(data.data);
             } catch (e) {
-                console.error("Error loading transaction metrics:", e);
+                console.error("Error loading transaction details:", e);
             } finally {
                 setIsLoading(false);
             }
@@ -57,18 +47,53 @@ export default function TransactionDetailsPage() {
         if (transactionId) fetchDetails();
     }, [transactionId]);
 
-    const handleInputChange = (key: string, value: string) => {
-        setFormData(prev => ({ ...prev, [key]: value }));
-    };
-
-    const handleSubmitTransaction = (e: React.FormEvent) => {
-        e.preventDefault();
+    /**
+     * Called by DynamicFormBuilder once the schema has been validated successfully.
+     * `formData` is a key→value map matching the `keyName` of each requiredIntialData entry.
+     */
+    const handleSubmitTransaction = async (formData: Record<string, unknown>) => {
         setIsSubmitLoading(true);
-        // Execute transaction creation requests here
+        try {
+            // Build the payload matching the backend contract:
+            // { intialData: { [keyName]: value } }
+            const intialData = transactionDetails!.requiredIntialData.reduce(
+                (payload, field) => {
+                    const rawValue = String(formData[field.keyName] ?? '');
+                    const normalizedValue =
+                        field.keyType.toLowerCase() === 'date'
+                            ? rawValue.slice(0, 10)
+                            : rawValue;
+
+                    return {
+                        ...payload,
+                        [field.keyName]: normalizedValue,
+                    };
+                },
+                {} as Record<string, string>
+            );
+
+            await apiRequest(`/citizen/transactions/${transactionId}/request`, {
+                method: 'POST',
+                bodyData: {
+                    intialData,
+                },
+            });
+
+            toast.success('تم تقديم المعاملة بنجاح', {
+                position: 'top-right',
+                autoClose: 4000,
+                theme: 'dark',
+                rtl: true,
+            });
+        } catch {
+            // apiRequest already shows a toast for HTTP errors
+        } finally {
+            setIsSubmitLoading(false);
+        }
     };
 
     if (isLoading) {
-        return <LoadingCircle/>;
+        return <LoadingCircle />;
     }
 
     return (
@@ -87,36 +112,14 @@ export default function TransactionDetailsPage() {
             <Section title="تفاصيل المعاملة">
                 <div className={styles.workspace_grid}>
 
-                    {/* Primary Wing Block: Dynamic Form Requirements */}
+                    {/* Primary Wing Block: Dynamic Form with Validation */}
                     <div className={styles.form_wing_block}>
                         <h3 className={styles.wing_subtitle}>متطلبات المعاملة</h3>
-                        <form onSubmit={handleSubmitTransaction}>
-                            <ul className={styles.fields_matrix}>
-                                {transactionDetails?.requiredIntialData.map((data) => (
-                                    <li key={data.id}>
-                                        <Input
-                                            onChange={(value: string) => handleInputChange(data.keyName, value)}
-                                            label={data.keyName}
-                                            icon={<IoMdCard size={20} />}
-                                            required={data.isRequired}
-                                            value={formData[data.keyName] || ''}
-                                            type={mapInputType(data.keyType)}
-                                        />
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <Button type="submit" variant="submit">
-                                {isSubmitLoading ? (
-                                    <span>جاري إنشاء المعاملة...</span>
-                                ) : (
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
-                                        <span>التقديم على المعاملة</span>
-                                        <MdArrowBackIos size={16} style={{ transform: 'rotate(180deg)' }} />
-                                    </div>
-                                )}
-                            </Button>
-                        </form>
+                        <DynamicFormBuilder
+                            fields={transactionDetails?.requiredIntialData ?? []}
+                            onSubmit={handleSubmitTransaction}
+                            isSubmitting={isSubmitLoading}
+                        />
                     </div>
 
                     {/* Secondary Wing Block: Sequential Sidebar Track Pipeline */}

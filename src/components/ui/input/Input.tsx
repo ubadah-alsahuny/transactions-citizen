@@ -9,6 +9,8 @@ type InputProps = {
     value: string
     placeholder?: string
     required?: boolean
+    error?: string
+    id?: string
 }
 
 export default function Input({
@@ -18,11 +20,14 @@ export default function Input({
                                   type = 'text',
                                   value,
                                   required = false,
+                                  error,
+                                  id,
                               }: InputProps) {
     return (
         <div className={styles.input_wrapper}>
             {icon && <span className={styles.icon_settings}>{icon}</span>}
             <input
+                id={id}
                 type={type}
                 placeholder={label}
                 value={value}
@@ -30,8 +35,9 @@ export default function Input({
                 autoComplete='off'
                 autoCapitalize='off'
                 onChange={(e) => onChange(e.target.value)}
-                className={styles.input_field_settings}
+                className={`${styles.input_field_settings} ${error ? styles.input_error : ''}`}
             />
+            {error && <p className={styles.error_text}>{error}</p>}
         </div>
     )
 }

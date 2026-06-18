@@ -1,0 +1,62 @@
+/* ==========================================================================
+   DynamicField — field-row layout with type-badge annotation
+   ========================================================================== */
+
+.field_row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%;
+    direction: rtl;
+}
+
+/* Tiny pill above each input showing its data type */
+.type_badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.18rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    width: fit-content;
+    opacity: 0.85;
+    background-color: color-mix(in srgb, var(--color-action) 12%, transparent);
+    color: var(--color-action);
+    border: 1px solid color-mix(in srgb, var(--color-action) 25%, transparent);
+    transition: opacity 0.2s ease;
+}
+
+/* Per-type colour overrides */
+.type_badge[data-type="phone"] {
+    background-color: color-mix(in srgb, #7c3aed 12%, transparent);
+    color: #7c3aed;
+    border-color: color-mix(in srgb, #7c3aed 25%, transparent);
+}
+
+.type_badge[data-type="email"] {
+    background-color: color-mix(in srgb, #0284c7 12%, transparent);
+    color: #0284c7;
+    border-color: color-mix(in srgb, #0284c7 25%, transparent);
+}
+
+.type_badge[data-type="number"] {
+    background-color: color-mix(in srgb, #d97706 12%, transparent);
+    color: #d97706;
+    border-color: color-mix(in srgb, #d97706 25%, transparent);
+}
+
+.type_badge[data-type="date"],
+.type_badge[data-type="datetime"],
+.type_badge[data-type="date-time-picker"] {
+    background-color: color-mix(in srgb, #db2777 12%, transparent);
+    color: #db2777;
+    border-color: color-mix(in srgb, #db2777 25%, transparent);
+}
+
+.type_badge[data-type="boolean"],
+.type_badge[data-type="checkbox"] {
+    background-color: color-mix(in srgb, var(--color-action) 12%, transparent);
+    color: var(--color-action);
+    border-color: color-mix(in srgb, var(--color-action) 25%, transparent);
+}

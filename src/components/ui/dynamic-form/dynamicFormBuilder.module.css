@@ -1,0 +1,93 @@
+/* ==========================================================================
+   DynamicFormBuilder — form layout, error summary, submit styling
+   ========================================================================== */
+
+.fields_list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 0;
+    margin: 0 0 1.75rem 0;
+    list-style: none;
+    width: 100%;
+}
+
+.field_item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    position: relative;
+}
+
+/* Small required badge shown below each mandatory field */
+.required_badge {
+    font-size: 0.72rem;
+    color: var(--color-danger);
+    font-weight: 600;
+    text-align: right;
+    direction: rtl;
+    opacity: 0.8;
+}
+
+/* Error summary banner — shows when submit reveals errors */
+.error_summary {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.1rem;
+    border-radius: 0.75rem;
+    background-color: color-mix(in srgb, var(--color-danger) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-danger) 25%, transparent);
+    color: var(--color-danger);
+    font-size: 0.88rem;
+    direction: rtl;
+    text-align: right;
+    margin-bottom: 1.25rem;
+    animation: fadeSlideIn 0.25s ease;
+}
+
+.error_summary p {
+    margin: 0;
+}
+
+@keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Submit button inner layout */
+.btn_inner {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.btn_loading {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    justify-content: center;
+}
+
+/* Simple CSS spinner for loading state */
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.empty_notice {
+    color: var(--color-sub-text);
+    text-align: center;
+    padding: 1.5rem 0;
+    font-size: 0.95rem;
+}

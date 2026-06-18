@@ -48,3 +48,17 @@
 .input_field_settings:focus + .icon_settings {
     color: var(--color-action);
 }
+
+/* Error state */
+.input_error {
+    border-color: var(--color-danger) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-danger) 12%, transparent) !important;
+}
+
+.error_text {
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--color-danger);
+    direction: rtl;
+    text-align: right;
+}
