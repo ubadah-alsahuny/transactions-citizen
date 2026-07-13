@@ -88,6 +88,91 @@
     display: none;
 }
 
+.mobile_menu_overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    height: 100dvh;
+    background-color: color-mix(in srgb, var(--color-section) 80%, transparent);
+    backdrop-filter: blur(19px) saturate(18%);
+    -webkit-backdrop-filter: blur(19px) saturate(180%);
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+    direction: ltr;
+}
+
+.mobile_menu_panel {
+    width: min(20rem, 86vw);
+    height: 100dvh;
+    background-color: color-mix(in srgb, var(--color-section) 96%, transparent);
+    backdrop-filter: blur(21px) saturate(190%);
+    -webkit-backdrop-filter: blur(21px) saturate(190%);
+    border-left: 1px solid var(--color-outine);
+    box-shadow: -14px 0 40px rgba(0, 0, 0, 0.25);
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    direction: rtl;
+}
+
+.mobile_menu_top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mobile_menu_top_actions {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.mobile_menu_close {
+    padding: 0.25rem !important;
+    border-radius: 0.6rem !important;
+}
+
+.mobile_menu_icon_button {
+    padding: 0.25rem !important;
+    border-radius: 0.6rem !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile_menu_icon_button svg {
+    display: block;
+}
+
+.mobile_menu_nav,
+.mobile_menu_actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.mobile_menu_actions {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-outine);
+}
+
+.mobile_menu_item {
+    width: 100%;
+    justify-content: flex-end;
+    text-align: right;
+    padding: 0.65rem 0.85rem !important;
+    border-radius: 0.7rem !important;
+    font-size: 0.95rem !important;
+}
+
+.mobile_menu_item:hover {
+    background-color: color-mix(in srgb, var(--color-action) 10%, transparent) !important;
+    color: var(--color-action) !important;
+}
+
 /* ==========================================================================
    Responsive Adaptations
    ========================================================================== */

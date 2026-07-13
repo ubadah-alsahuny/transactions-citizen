@@ -2,188 +2,336 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-}
-
-/* --- Timeline Progress Track Architecture --- */
-.timeline_wrapper {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin: 3rem 0;
+    gap: 1.5rem;
     direction: rtl;
 }
 
-.timeline_line_bg {
-    position: absolute;
-    top: 1rem; /* Centers vertically with the 2rem/32px node circles */
-    left: 0;
-    right: 0;
-    height: 4px;
-    background-color: var(--color-outine);
-    z-index: 1;
-    border-radius: 2px;
-}
-
-.timeline_line_fill {
-    position: absolute;
-    top: 1rem;
-    right: 0; /* Fills correctly from right to left for RTL */
-    height: 4px;
-    background-color: var(--color-action);
-    z-index: 2;
-    border-radius: 2px;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* --- Individual Step Nodes --- */
-.step_node {
-    position: relative;
+.timeline_list {
     display: flex;
     flex-direction: column;
+    gap: 1.15rem;
+}
+
+.step_entry {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 3.75rem;
+    gap: 0.85rem;
+    align-items: start;
+}
+
+.step_content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.step_header {
+    display: flex;
     align-items: center;
-    z-index: 3;
-    flex-1: 1;
+    justify-content: space-between;
+    gap: 0.85rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--color-outine);
+    border-radius: 0.85rem;
+    background-color: var(--color-section);
+    box-shadow: 0 10px 30px -24px rgba(15, 26, 22, 0.35);
+}
+
+.step_heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+}
+
+.step_order_label {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--color-sub-text);
+}
+
+.step_title {
+    margin: 0 !important;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--color-text);
+    text-align: right !important;
+    overflow-wrap: anywhere;
+    line-height: 1.45;
+}
+
+.toggle_button {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-outine);
+    border-radius: 999px;
+    background-color: var(--color-primary);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    flex-shrink: 0;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0;
+}
+
+.toggle_button:hover {
+    transform: translateY(-1px);
+    background-color: var(--color-section);
+    border-color: var(--color-action);
+}
+
+.toggle_button svg {
+    width: 1rem;
+    height: 1rem;
+    display: block;
+    flex-shrink: 0;
+}
+
+.step_details_card {
+    border: 1px solid var(--color-outine);
+    border-radius: 0.85rem;
+    background-color: var(--color-section);
+    padding: 0.9rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.step_details_card[data-state="active"] {
+    border-color: color-mix(in srgb, var(--color-action) 40%, var(--color-outine));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-action) 10%, transparent);
+}
+
+.step_details_card[data-state="rejected"] {
+    border-color: color-mix(in srgb, var(--color-danger) 35%, var(--color-outine));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-danger) 8%, transparent);
+}
+
+.step_meta_grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.meta_item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.7rem 0.8rem;
+    border-radius: 0.75rem;
+    background-color: color-mix(in srgb, var(--color-section) 88%, var(--color-primary));
+}
+
+.meta_item_label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-sub-text);
+}
+
+.meta_item_value {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--color-text);
+    overflow-wrap: anywhere;
+    line-height: 1.55;
+}
+
+.legal_block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 0.85rem 0.95rem;
+    border-radius: 0.75rem;
+    background-color: color-mix(in srgb, var(--color-section) 84%, var(--color-primary));
+}
+
+.rejection_block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 0.85rem 0.95rem;
+    border-radius: 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--color-danger) 40%, var(--color-outine));
+    background-color: color-mix(in srgb, var(--color-section) 82%, var(--color-danger));
+}
+
+.legal_paragraph {
+    margin: 0;
+    color: var(--color-text);
+    line-height: 1.7;
+    text-align: right;
+    font-size: 0.84rem;
+}
+
+.step_rail {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    min-height: 100%;
+    padding-top: 0.15rem;
+}
+
+.step_line {
+    position: absolute;
+    top: 2.4rem;
+    bottom: -1.2rem;
+    width: 3px;
+    border-radius: 999px;
+    background-color: var(--color-outine);
+}
+
+.step_entry:last-child .step_line {
+    display: none;
+}
+
+.step_node {
+    position: relative;
+    z-index: 1;
 }
 
 .circle_indicator {
-    width: 2rem;
-    height: 2rem;
+    width: 2.4rem;
+    height: 2.4rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 0.9rem;
-    background-color: var(--color-primary);
-    border: 3px solid var(--color-outine);
+    font-size: 0.86rem;
+    font-weight: 800;
     color: var(--color-sub-text);
-    transition: all 0.3s ease;
+    background-color: var(--color-primary);
+    border: 2px solid var(--color-outine);
+    box-shadow: 0 10px 24px -20px rgba(15, 26, 22, 0.45);
 }
 
 .step_node[data-state="completed"] .circle_indicator {
+    color: #ffffff;
     background-color: var(--color-action);
     border-color: var(--color-action);
-    color: #ffffff;
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-action) 20%, transparent);
 }
 
 .step_node[data-state="active"] .circle_indicator {
+    color: var(--color-action);
     background-color: var(--color-section);
     border-color: var(--color-action);
-    color: var(--color-action);
     box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-action) 15%, transparent);
 }
 
 .step_node[data-state="rejected"] .circle_indicator {
+    color: #ffffff;
     background-color: var(--color-danger);
     border-color: var(--color-danger);
-    color: #ffffff;
 }
 
-.step_title {
-    margin-top: 0.75rem !important;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-sub-text);
-    white-space: nowrap;
-    text-align: center;
-    justify-self: center;
-}
-
-.step_node[data-state="completed"] .step_title,
-.step_node[data-state="active"] .step_title {
-    color: var(--color-text);
-}
-
-.step_node[data-state="rejected"] .step_title {
-    color: var(--color-danger);
-}
-
-/* --- Metadata Summary Dashboard Card --- */
 .meta_dashboard {
     background-color: var(--color-section);
     border: 1px solid var(--color-outine);
-    border-radius: 1rem;
-    padding: 1.5rem;
+    border-radius: 0.9rem;
+    padding: 1.15rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.8rem;
     width: 100%;
-    max-width: 600px;
-    margin: 2rem auto 0 auto;
-    direction: rtl;
-    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.01);
+    box-shadow: 0 10px 30px -24px rgba(15, 26, 22, 0.35);
 }
 
 .meta_title {
-    font-size: 1.15rem;
+    margin: 0 !important;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--color-text);
     border-bottom: 1px solid var(--color-outine);
-    padding-bottom: 0.75rem;
-    margin-bottom: 0.25rem;
-    text-align: right !important; /* Overrides global index.css centering rules */
-    justify-self: start !important;
+    padding-bottom: 0.6rem;
+    text-align: right !important;
 }
 
 .meta_row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.25rem 0;
+    gap: 0.85rem;
+    padding: 0.15rem 0;
 }
 
 .meta_label {
-    font-size: 0.95rem;
+    font-size: 0.84rem;
     color: var(--color-sub-text);
     text-align: right !important;
 }
 
 .meta_value {
-    font-size: 0.95rem;
+    font-size: 0.84rem;
     font-weight: 600;
     color: var(--color-text);
     text-align: left !important;
+    overflow-wrap: anywhere;
 }
 
-/* --- Responsive Adaptations --- */
+.step_details_card [data-status],
+.meta_dashboard [data-status] {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.74rem;
+}
+
+:global(html.dark-theme) .step_header,
+:global(html.dark-theme) .step_details_card,
+:global(html.dark-theme) .meta_dashboard {
+    box-shadow: 0 14px 32px -28px rgba(0, 0, 0, 0.85);
+}
+
+:global(html.dark-theme) .meta_item {
+    background-color: color-mix(in srgb, var(--color-section) 92%, #1a2328);
+    border: 1px solid color-mix(in srgb, var(--color-outine) 75%, transparent);
+}
+
+:global(html.dark-theme) .legal_block {
+    background-color: color-mix(in srgb, var(--color-section) 88%, #172126);
+    border: 1px solid color-mix(in srgb, var(--color-outine) 75%, transparent);
+}
+
+:global(html.dark-theme) .rejection_block {
+    background-color: color-mix(in srgb, var(--color-section) 88%, rgba(220, 38, 38, 0.16));
+    border: 1px solid color-mix(in srgb, var(--color-danger) 50%, var(--color-outine));
+}
+
+@media screen and (max-width: 860px) {
+    .step_meta_grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media screen and (max-width: 680px) {
-    .timeline_wrapper {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1.75rem;
-        padding-right: 1.5rem;
-        margin: 1.5rem 0;
+    .step_entry {
+        grid-template-columns: 3rem minmax(0, 1fr);
+        gap: 0.7rem;
     }
 
-    .timeline_line_bg {
-        top: 0;
-        bottom: 0;
-        right: 2.25rem;
-        left: auto;
-        width: 4px;
-        height: 100%;
+    .step_content {
+        order: 2;
     }
 
-    .timeline_line_fill {
-        top: 0;
-        right: 2.25rem;
-        left: auto;
-        width: 4px;
-        transition: height 0.4s ease;
+    .step_rail {
+        order: 1;
     }
 
-    .step_node {
-        flex-direction: row-reverse;
-        gap: 1.25rem;
-        align-items: center;
+    .step_header {
+        padding: 0.75rem 0.85rem;
     }
 
     .step_title {
-        margin-top: 0 !important;
+        font-size: 0.88rem;
+    }
+
+    .meta_row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .meta_value {
         text-align: right !important;
     }
 }

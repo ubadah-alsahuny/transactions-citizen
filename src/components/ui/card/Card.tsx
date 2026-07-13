@@ -9,7 +9,7 @@ type CardProps = {
     width?: string,
     height: string,
     children: React.ReactNode
-    image?: React.ReactNode
+    image?: string
     buttonLabel?: React.ReactNode
     buttonIcon?: React.ReactNode
     onButtonClick?: () => void

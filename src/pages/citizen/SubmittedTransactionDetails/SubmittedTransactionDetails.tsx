@@ -1,22 +1,60 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTransactions } from "@/data/transactions/useTransactions.ts";
 import { useParams } from "react-router-dom";
 import { LoadingCircle } from "@/components/ui/loading-circle/LoadingCircle.tsx";
 import { PageContainer } from "@/layouts/PageContainer.tsx";
 import { Section } from "@/layouts/Section.tsx";
-import { mapStatus } from "@/data/utils/mapStatus.ts";
 import { formatDateAndTime } from "@/data/utils/formatDateAndTime.ts";
 import StatusBadge from "@/components/ui/status-badge/StatusBadge.tsx";
+import styles from "@/styles/pages/citizen/SubmittedTransactionDetails/submittedtransactiondetails.module.css";
+import { mapTransactionRequestStatus } from "@/data/utils/mapTransactionRequestStatus.ts";
+import { mapTransactionStepStatus } from "@/data/utils/mapTransactionStepStatus.ts";
+import { getStepLegalParagraph } from "@/data/utils/getStepLegalParagraph.ts";
+import { getStepRejectionReason } from "@/data/utils/getStepRejectionReason.ts";
+import type { TransactionStep } from "@/data/transactions/useTransactions.ts";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
+type StepTimelineState = 'completed' | 'active' | 'rejected' | 'upcoming';
+
+function getStepTimelineState(step: TransactionStep, currentStepOrder: number): StepTimelineState {
+    if (step.status === 'rejected') {
+        return 'rejected';
+    }
+
+    if (step.status === 'approved') {
+        return 'completed';
+    }
+
+    if (step.status === 'waiting' && step.stepOrder === currentStepOrder) {
+        return 'active';
+    }
+
+    return 'upcoming';
+}
 
 export default function SubmittedTransactionDetails() {
     const { id } = useParams<{ id: string }>();
     const { fetchSubmittedTransactionDetails, transaction, isLoading, error } = useTransactions();
+    const [expandedSteps, setExpandedSteps] = useState<Record<string, boolean>>({});
 
     useEffect(() => {
         if (id) {
             fetchSubmittedTransactionDetails(id);
         }
-    }, [id]);
+    }, [fetchSubmittedTransactionDetails, id]);
+
+    const sortedSteps = transaction?.steps
+        ? [...transaction.steps].sort((firstStep, secondStep) => firstStep.stepOrder - secondStep.stepOrder)
+        : [];
+
+    const defaultExpandedStepId = sortedSteps[0]?.id;
+
+    const toggleStepDetails = (stepId: string) => {
+        setExpandedSteps((currentExpandedSteps) => ({
+            ...currentExpandedSteps,
+            [stepId]: !currentExpandedSteps[stepId],
+        }));
+    };
 
     if (isLoading) {
         return <LoadingCircle/>;
@@ -39,163 +77,127 @@ export default function SubmittedTransactionDetails() {
         <PageContainer>
             {transaction ? (
                 <Section title={transaction.transactionName || "تفاصيل المعاملة"}>
+                    <div className={styles.page_wrapper}>
+                        <div className={styles.timeline_list}>
+                            {sortedSteps.map((step) => {
+                                const timelineState = getStepTimelineState(step, currentStepOrder);
+                                const isExpanded = expandedSteps[step.id] ?? step.id === defaultExpandedStepId;
+                                const legalParagraph = getStepLegalParagraph(step.data);
+                                const rejectionReason = getStepRejectionReason(step.data);
 
-                    {/* Embedded Responsive Stepper Rules */}
-                    <style>{`
-                        .stepper-responsive-container {
-                            display: flex;
-                            flex-direction: row;
-                            justify-content: space-between;
-                            align-items: center;
-                            position: relative;
-                            width: 100%;
-                            margin: 3rem 0;
-                            padding: 0 1rem;
-                            direction: rtl;
-                        }
-                        .step-line-back {
-                            position: absolute;
-                            top: 25px;
-                            right: 0;
-                            left: 0;
-                            height: 4px;
-                            background-color: var(--color-outine);
-                            z-index: 0;
-                        }
-                        .step-item {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            z-index: 1;
-                            flex: 1;
-                            position: relative;
-                        }
-                        
-                        @media (max-width: 680px) {
-                            .stepper-responsive-container {
-                                flex-direction: column !important;
-                                align-items: flex-start !important;
-                                gap: 1.75rem;
-                                margin: 1.5rem 0;
-                                padding-right: 0.5rem;
-                            }
-                            .step-line-back {
-                                display: none !important;
-                            }
-                            .step-item {
-                                flex-direction: row !important;
-                                width: 100%;
-                                justify-content: flex-start !important;
-                                gap: 1.25rem;
-                            }
-                            .step-label {
-                                margin-top: 0 !important;
-                                text-align: right !important;
-                            }
-                        }
-                    `}</style>
+                                return (
+                                    <article key={step.id} className={styles.step_entry}>
+                                        <div className={styles.step_content}>
+                                            <div className={styles.step_header}>
+                                                <div className={styles.step_heading}>
+                                                    <span className={styles.step_order_label}>
+                                                        المرحلة {step.stepOrder}
+                                                    </span>
+                                                    <h3 className={styles.step_title}>{step.sectionName}</h3>
+                                                </div>
 
-                    {/* Stepper Flow Section */}
-                    <div className="stepper-responsive-container">
+                                                <button
+                                                    type="button"
+                                                    className={styles.toggle_button}
+                                                    onClick={() => toggleStepDetails(step.id)}
+                                                    aria-expanded={isExpanded}
+                                                    aria-label={isExpanded ? 'إخفاء تفاصيل المرحلة' : 'إظهار تفاصيل المرحلة'}
+                                                >
+                                                    {isExpanded ? <FaEyeSlash /> : <FaEye />}
+                                                </button>
+                                            </div>
 
-                        {/* Desktop Horizontal Connecting Line */}
-                        <div className="step-line-back" />
+                                            {isExpanded && (
+                                                <div className={styles.step_details_card} data-state={timelineState}>
+                                                    <div className={styles.step_meta_grid}>
+                                                        <div className={styles.meta_item}>
+                                                            <span className={styles.meta_item_label}>حالة المرحلة</span>
+                                                            <StatusBadge status={mapTransactionStepStatus(step.status)} />
+                                                        </div>
 
-                        {transaction.steps?.map((step: any) => {
-                            // Backend alignment logic checks
-                            const isRejectedStep = transaction.status === 'rejected';
-                            const isCompletedStep = step.order < currentStepOrder || step.status === 'approved' || transaction.status === 'completed';
-                            const isActiveStep = step.status === 'pending' || step.status === 'waiting';
+                                                        <div className={styles.meta_item}>
+                                                            <span className={styles.meta_item_label}>الموظف المسؤول</span>
+                                                            <span className={styles.meta_item_value}>
+                                                                {step.employeeName || 'لم يتم تعيين موظف بعد'}
+                                                            </span>
+                                                        </div>
 
-                            // Visual Configurations based on State
-                            let circleBg = 'var(--color-primary)';
-                            let circleBorder = '2px solid var(--color-outine)';
-                            let circleColor = 'var(--color-sub-text)';
-                            let symbol: React.ReactNode = step.order;
+                                                        <div className={styles.meta_item}>
+                                                            <span className={styles.meta_item_label}>وقت المعالجة</span>
+                                                            <span className={styles.meta_item_value}>
+                                                                {step.processedAt ? formatDateAndTime(step.processedAt) : 'لم تتم المعالجة بعد'}
+                                                            </span>
+                                                        </div>
+                                                    </div>
 
-                            if (isRejectedStep) {
-                                circleBg = 'var(--color-danger)';
-                                circleBorder = '2px solid var(--color-danger)';
-                                circleColor = '#ffffff';
-                                symbol = '✕';
-                            } else if (isCompletedStep) {
-                                circleBg = 'var(--color-action)';
-                                circleBorder = '2px solid var(--color-action)';
-                                circleColor = '#ffffff';
-                                symbol = '✓';
-                            } else if (isActiveStep) {
-                                circleBg = 'var(--color-primary)';
-                                circleBorder = '2px solid #bfa15f';
-                                circleColor = '#bfa15f';
-                                symbol = '~'
-                            }
+                                                    {step.status === 'rejected' && (
+                                                        <div className={styles.rejection_block}>
+                                                            <span className={styles.meta_item_label}>سبب الرفض</span>
+                                                            <p className={styles.legal_paragraph}>
+                                                                {rejectionReason || 'لم يتم تزويد سبب الرفض.'}
+                                                            </p>
+                                                        </div>
+                                                    )}
 
-                            return (
-                                <div key={step.id || step.order} className="step-item">
+                                                    <div className={styles.legal_block}>
+                                                        <span className={styles.meta_item_label}>الفقرة القانونية</span>
+                                                        <p className={styles.legal_paragraph}>
+                                                            {legalParagraph || 'لا توجد فقرة قانونية مرتبطة بهذه المرحلة حالياً.'}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
 
-                                    {/* Visual Status Indicator Node */}
-                                    <div style={{
-                                        width: '50px',
-                                        height: '50px',
-                                        borderRadius: '50%',
-                                        backgroundColor: circleBg,
-                                        border: circleBorder,
-                                        color: circleColor,
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        fontWeight: 'bold',
-                                        fontSize: '1.2rem',
-                                        boxShadow: 'rgba(0, 0, 0, 0.05) 0 0.15rem 0.3rem'
-                                    }}>
-                                        {symbol}
-                                    </div>
+                                        <div className={styles.step_rail}>
+                                            <div className={styles.step_line} />
+                                            <div className={styles.step_node} data-state={timelineState}>
+                                                <span className={styles.circle_indicator}>
+                                                    {timelineState === 'completed' ? '✓' : timelineState === 'rejected' ? '✕' : step.stepOrder}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </article>
+                                );
+                            })}
+                        </div>
 
-                                    {/* Section Information Label */}
-                                    <div className="step-label" style={{
-                                        marginTop: '0.75rem',
-                                        fontSize: '1rem',
-                                        fontWeight: isActiveStep || isRejectedStep ? 'bold' : 'normal',
-                                        color: isRejectedStep ? 'var(--color-danger)'
-                                            : isCompletedStep || isActiveStep ? 'var(--color-text)'
-                                                : 'var(--color-sub-text)',
-                                        textAlign: 'center',
-                                        whiteSpace: 'nowrap'
-                                    }}>
-                                        {step.sectionName}
-                                    </div>
-                                </div>
-                            );
-                        })}
+                        <div className={styles.meta_dashboard}>
+                            <h3 className={styles.meta_title}>معلومات الطلب</h3>
+
+                            <div className={styles.meta_row}>
+                                <span className={styles.meta_label}>رقم الطلب</span>
+                                <span className={styles.meta_value}>{transaction.id}</span>
+                            </div>
+
+                            <div className={styles.meta_row}>
+                                <span className={styles.meta_label}>رقم المعاملة</span>
+                                <span className={styles.meta_value}>{transaction.transactionId}</span>
+                            </div>
+
+                            <div className={styles.meta_row}>
+                                <span className={styles.meta_label}>الجهة المسؤولة</span>
+                                <span className={styles.meta_value}>{transaction.institutionName}</span>
+                            </div>
+
+                            <div className={styles.meta_row}>
+                                <span className={styles.meta_label}>تاريخ الإنشاء</span>
+                                <span className={styles.meta_value}>{formatDateAndTime(transaction.createdAt)}</span>
+                            </div>
+
+                            <div className={styles.meta_row}>
+                                <span className={styles.meta_label}>آخر تحديث</span>
+                                <span className={styles.meta_value}>{formatDateAndTime(transaction.updatedAt)}</span>
+                            </div>
+
+                            <div className={styles.meta_row}>
+                                <span className={styles.meta_label}>حالة الطلب العامة</span>
+                                <span className={styles.meta_value}>
+                                    <StatusBadge status={mapTransactionRequestStatus(transaction.status)} />
+                                </span>
+                            </div>
+                        </div>
                     </div>
-
-                    {/* Metadata Summary Info Cards */}
-                    <div style={{
-                        border: '1px solid var(--color-outine)',
-                        padding: '1.5rem',
-                        borderRadius: '0.75rem',
-                        marginTop: '2rem',
-                        direction: 'rtl',
-                        backgroundColor: 'var(--color-section)'
-                    }}>
-                        <h3 style={{ marginBottom: '1rem', color: 'var(--color-text)', textAlign: 'right' }}>معلومات المعاملة:</h3>
-                        <p style={{ margin: '0.5rem 0', color: 'var(--color-text)', textAlign: 'right' }}>
-                            <strong>رقم الطلب:</strong> <span style={{ color: 'var(--color-sub-text)', marginRight: '0.5rem' }}>{transaction.id}</span>
-                        </p>
-                        <p style={{ margin: '0.5rem 0', color: 'var(--color-text)', textAlign: 'right' }}>
-                            <strong>تاريخ الطلب:</strong> <span style={{ color: 'var(--color-sub-text)', marginRight: '0.5rem' }}>{formatDateAndTime(transaction.updatedAt)}</span>
-                        </p>
-                        <p style={{ margin: '0.5rem 0', color: 'var(--color-text)', textAlign: 'right' }}>
-                            <strong>حالة المعاملة الكلية:</strong>
-                            <span style={{
-                                fontWeight: 'bold',
-                                marginRight: '0.5rem'
-                            }}>
-                                <StatusBadge status={mapStatus(transaction.status)}></StatusBadge>
-                            </span>
-                        </p>
-                    </div>
-
                 </Section>
             ) : (
                 <p style={{ textAlign: 'center', marginTop: '2rem', color: 'var(--color-sub-text)' }}>
