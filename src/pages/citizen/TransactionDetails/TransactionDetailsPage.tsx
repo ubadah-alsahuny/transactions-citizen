@@ -1,14 +1,19 @@
 import { PageContainer } from "@/layouts/PageContainer.tsx";
 import { Section } from "@/layouts/Section.tsx";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { apiRequest } from "@/data/api/api.ts";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { LoadingCircle } from "@/components/ui/loading-circle/LoadingCircle.tsx";
 import StepCard from "@/components/ui/step-card/StepCard.tsx";
 import DynamicFormBuilder from "@/components/ui/dynamic-form/DynamicFormBuilder.tsx";
 import type { RequiredInitialData } from "@/components/ui/dynamic-form/fieldValidator.ts";
 import styles from '@/styles/pages/citizen/TransactionDetails/transactiondetails.module.css';
 import { toast } from "react-toastify";
+import {
+    clearTransactionDraft,
+    loadTransactionDraft,
+    saveTransactionDraft,
+} from "@/data/transactions/transactionDraftStorage.ts";
 
 type TransactionSteps = {
     order: number;
@@ -26,15 +31,24 @@ type TransactionDetails = {
 
 export default function TransactionDetailsPage() {
     const location = useLocation();
+    const navigate = useNavigate();
     const transactionId = location.pathname.split("/").pop();
 
     const [transactionDetails, setTransactionDetails] = useState<TransactionDetails | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
+    const [draftValues, setDraftValues] = useState<Record<string, unknown>>({});
+
+    const draftFieldNames = useMemo(
+        () => transactionDetails?.requiredIntialData.map((field) => field.keyName) ?? [],
+        [transactionDetails]
+    );
 
     useEffect(() => {
         const fetchDetails = async () => {
             setIsLoading(true);
+            setTransactionDetails(null);
+            setDraftValues({});
             try {
                 const data = await apiRequest(`/citizen/transactions/${transactionId}`);
                 setTransactionDetails(data.data);
@@ -47,6 +61,24 @@ export default function TransactionDetailsPage() {
         if (transactionId) fetchDetails();
     }, [transactionId]);
 
+    useEffect(() => {
+        if (!transactionId || draftFieldNames.length === 0) {
+            setDraftValues({});
+            return;
+        }
+
+        const savedDraft = loadTransactionDraft(transactionId, draftFieldNames);
+        setDraftValues(savedDraft ?? {});
+    }, [draftFieldNames, transactionId]);
+
+    const handleDraftChange = (formData: Record<string, unknown>) => {
+        if (!transactionId || draftFieldNames.length === 0) {
+            return;
+        }
+
+        saveTransactionDraft(transactionId, formData, draftFieldNames);
+    };
+
     /**
      * Called by DynamicFormBuilder once the schema has been validated successfully.
      * `formData` is a key→value map matching the `keyName` of each requiredIntialData entry.
@@ -58,18 +90,28 @@ export default function TransactionDetailsPage() {
             // { intialData: { [keyName]: value } }
             const intialData = transactionDetails!.requiredIntialData.reduce(
                 (payload, field) => {
-                    const rawValue = String(formData[field.keyName] ?? '');
-                    const normalizedValue =
-                        field.keyType.toLowerCase() === 'date'
-                            ? rawValue.slice(0, 10)
-                            : rawValue;
+                    const rawValue = formData[field.keyName];
+                    const normalizedFieldType = field.keyType.toLowerCase();
+                    let normalizedValue: string | boolean;
+
+                    if (normalizedFieldType === 'boolean' || normalizedFieldType === 'checkbox') {
+                        normalizedValue = typeof rawValue === 'boolean'
+                            ? rawValue
+                            : String(rawValue ?? '').toLowerCase() === 'true';
+                    } else {
+                        const stringValue = String(rawValue ?? '');
+                        normalizedValue =
+                            normalizedFieldType === 'date'
+                                ? stringValue.slice(0, 10)
+                                : stringValue;
+                    }
 
                     return {
                         ...payload,
                         [field.keyName]: normalizedValue,
                     };
                 },
-                {} as Record<string, string>
+                {} as Record<string, string | boolean>
             );
 
             await apiRequest(`/citizen/transactions/${transactionId}/request`, {
@@ -85,6 +127,13 @@ export default function TransactionDetailsPage() {
                 theme: 'dark',
                 rtl: true,
             });
+
+            if (transactionId) {
+                clearTransactionDraft(transactionId);
+            }
+
+            setDraftValues({});
+            navigate('/citizen/documents');
         } catch {
             // apiRequest already shows a toast for HTTP errors
         } finally {
@@ -119,6 +168,8 @@ export default function TransactionDetailsPage() {
                             fields={transactionDetails?.requiredIntialData ?? []}
                             onSubmit={handleSubmitTransaction}
                             isSubmitting={isSubmitLoading}
+                            defaultValues={draftValues}
+                            onValuesChange={handleDraftChange}
                         />
                     </div>
 

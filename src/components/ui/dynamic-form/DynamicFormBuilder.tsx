@@ -15,6 +15,7 @@
  *   />
  */
 
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { buildZodSchema } from './fieldValidator';
@@ -28,12 +29,16 @@ type DynamicFormBuilderProps = {
     fields: RequiredInitialData[];
     onSubmit: (data: Record<string, unknown>) => void;
     isSubmitting?: boolean;
+    defaultValues?: Record<string, unknown>;
+    onValuesChange?: (data: Record<string, unknown>) => void;
 };
 
 export default function DynamicFormBuilder({
     fields,
     onSubmit,
     isSubmitting = false,
+    defaultValues = {},
+    onValuesChange,
 }: DynamicFormBuilderProps) {
     // Build the Zod schema from the live fields list
     const schema = buildZodSchema(fields);
@@ -41,12 +46,31 @@ export default function DynamicFormBuilder({
     const {
         control,
         handleSubmit,
+        reset,
+        watch,
         formState: { errors },
     } = useForm({
         resolver: zodResolver(schema),
         mode: 'onSubmit',     // only validate on submit
         reValidateMode: 'onSubmit',
+        defaultValues,
     });
+
+    useEffect(() => {
+        reset(defaultValues);
+    }, [defaultValues, reset]);
+
+    useEffect(() => {
+        if (!onValuesChange) {
+            return;
+        }
+
+        const subscription = watch((values) => {
+            onValuesChange(values as Record<string, unknown>);
+        });
+
+        return () => subscription.unsubscribe();
+    }, [onValuesChange, watch]);
 
     const handleFormSubmit = (data: Record<string, unknown>) => {
         onSubmit(data);
