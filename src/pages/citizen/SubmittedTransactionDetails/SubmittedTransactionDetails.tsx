@@ -13,6 +13,9 @@ import { getStepLegalParagraph } from "@/data/utils/getStepLegalParagraph.ts";
 import { getStepRejectionReason } from "@/data/utils/getStepRejectionReason.ts";
 import type { TransactionStep } from "@/data/transactions/useTransactions.ts";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { apiRequest } from "@/data/api/api.ts";
+import VerificationModal from "@/components/verification/VerificationModal.tsx";
+import type { VerificationResult, VerificationResponse } from "@/types/verification.types.ts";
 
 type StepTimelineState = 'completed' | 'active' | 'rejected' | 'upcoming';
 
@@ -36,6 +39,23 @@ export default function SubmittedTransactionDetails() {
     const { id } = useParams<{ id: string }>();
     const { fetchSubmittedTransactionDetails, transaction, isLoading, error } = useTransactions();
     const [expandedSteps, setExpandedSteps] = useState<Record<string, boolean>>({});
+    const [verifyResult, setVerifyResult] = useState<VerificationResult | null>(null);
+    const [verifyLoading, setVerifyLoading] = useState(false);
+    const [verifyOpen, setVerifyOpen] = useState(false);
+
+    const handleVerify = async () => {
+        if (!id) return;
+        setVerifyLoading(true);
+        setVerifyOpen(true);
+        try {
+            const res: VerificationResponse = await apiRequest(`/citizen/transactions/verify/${id}/json`);
+            setVerifyResult(res.data);
+        } catch {
+            setVerifyResult(null);
+        } finally {
+            setVerifyLoading(false);
+        }
+    };
 
     useEffect(() => {
         if (id) {
@@ -196,6 +216,15 @@ export default function SubmittedTransactionDetails() {
                                     <StatusBadge status={mapTransactionRequestStatus(transaction.status)} />
                                 </span>
                             </div>
+                            {transaction.status === 'completed' && (
+                                <button
+                                    type="button"
+                                    className={styles.verify_button}
+                                    onClick={handleVerify}
+                                >
+                                    التحقق
+                                </button>
+                            )}
                         </div>
                     </div>
                 </Section>
@@ -204,6 +233,12 @@ export default function SubmittedTransactionDetails() {
                     تعذر العثور على بيانات المعاملة المطلوبة.
                 </p>
             )}
+            <VerificationModal
+                isOpen={verifyOpen}
+                onClose={() => setVerifyOpen(false)}
+                result={verifyResult}
+                isLoading={verifyLoading}
+            />
         </PageContainer>
     );
 }
