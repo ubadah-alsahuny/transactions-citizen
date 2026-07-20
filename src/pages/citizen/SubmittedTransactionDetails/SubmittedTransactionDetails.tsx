@@ -48,7 +48,7 @@ export default function SubmittedTransactionDetails() {
         setVerifyLoading(true);
         setVerifyOpen(true);
         try {
-            const res: VerificationResponse = await apiRequest(`/citizen/transactions/verify/${id}/json`);
+            const res: VerificationResponse = await apiRequest(`/blockchain/requests/${id}/verify`);
             setVerifyResult(res.data);
         } catch {
             setVerifyResult(null);
