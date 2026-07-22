@@ -1,6 +1,7 @@
 import {toast} from "react-toastify";
 
-const BASE_URL = 'http://localhost:3000/api';
+export const API_BASE_URL = 'http://localhost:3000/api';
+export const API_ORIGIN = API_BASE_URL.replace(/\/api$/, '');
 
 interface ApiOptions extends RequestInit {
     bodyData?: any;
@@ -20,7 +21,7 @@ export async function apiRequest(endpoint: string, options: ApiOptions = {}) {
         headers['Authorization'] = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         ...options,
         method: options.method || 'GET',
         headers,

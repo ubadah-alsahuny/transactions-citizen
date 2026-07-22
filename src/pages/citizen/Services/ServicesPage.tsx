@@ -3,18 +3,31 @@ import { Section } from "@/layouts/Section.tsx";
 import OrganizationCard from "@/components/ui/organization-card/OrganizationCard.tsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { apiRequest } from "@/data/api/api.ts";
+import { API_ORIGIN, apiRequest } from "@/data/api/api.ts";
 import { LoadingCircle } from "@/components/ui/loading-circle/LoadingCircle.tsx";
 import cardStyles from '@/styles/ui/organization-card/organizationcard.module.css';
 
-export default function ServicesPage() {
-    interface Institution {
-        id: number;
-        name: string;
-        description: string;
-        paragraph_photos: string[];
+interface Institution {
+    id: string;
+    name: string;
+    status: string;
+    logoSvg: string | null;
+    sectionsCount: number;
+}
+
+function buildInstitutionLogoUrl(logoPath: string | null): string | undefined {
+    if (!logoPath) {
+        return undefined;
     }
 
+    try {
+        return new URL(logoPath, `${API_ORIGIN}/`).toString();
+    } catch {
+        return undefined;
+    }
+}
+
+export default function ServicesPage() {
     const navigation = useNavigate();
     const [institutions, setInstitutions] = useState<Institution[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -62,7 +75,9 @@ export default function ServicesPage() {
                             <li key={institution.id}>
                                 <OrganizationCard
                                     name={institution.name}
-                                    description={institution.description}
+                                    description={`عدد الأقسام: ${institution.sectionsCount}`}
+                                    image={buildInstitutionLogoUrl(institution.logoSvg)}
+                                    status={institution.status}
                                     onClick={() => navigation(`institution/${institution.id}`)}
                                 />
                             </li>
